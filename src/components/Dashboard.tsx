@@ -1,9 +1,11 @@
-import { motion } from "framer-motion";
+import Navbar from "./Navbar";
 
 const Dashboard = () => {
   return (
     <>
-      <motion.div></motion.div>
+      <div className="flex flex-col container">
+        <Navbar />
+      </div>
     </>
   );
 };

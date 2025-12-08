@@ -1,7 +1,11 @@
+import Navbar from "./Navbar";
+
 const Ledger = () => {
   return (
     <>
-      <div></div>
+      <div className="flex flex-col container">
+        <Navbar />
+      </div>
     </>
   );
 };

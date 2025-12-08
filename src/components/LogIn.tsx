@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 const LogIn = () => {
@@ -29,6 +30,14 @@ const LogIn = () => {
               type="submit"
               className="self-center border border-border rounded-2xl h-8 w-3xs hover:cursor-pointer"
             />
+            <p className="text-contrast-text self-center lato">
+              New to Finocular?{" "}
+              <Link to="/signup">
+                <span className="text-contrast-text hover:text-amber-300">
+                  Create account
+                </span>
+              </Link>
+            </p>
           </form>
         </div>
       </div>
