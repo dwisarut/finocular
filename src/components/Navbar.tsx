@@ -22,7 +22,7 @@ const Navbar = () => {
           {navItems.map((item) => {
             return (
               <Link
-                className="text-contrast-text pl-8 pr-8 self-center lato"
+                className="text-contrast-text pl-8 pr-8 self-center lato hover:text-amber-300"
                 key={item.name}
                 to={item.href}
               >

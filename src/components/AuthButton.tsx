@@ -19,7 +19,7 @@ const AuthButton = () => {
             <Link
               key={item.name}
               to={item.href}
-              className="flex pl-2 pr-2 m-2 self-center lato"
+              className="flex pl-2 pr-2 m-2 self-center lato hover:text-amber-300"
             >
               {item.name}
             </Link>
