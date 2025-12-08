@@ -1,4 +1,8 @@
+import { useForm } from "react-hook-form";
+
 const SignUp = () => {
+  const { register, handleSubmit } = useForm();
+
   return (
     <>
       <div className="flex container justify-center mt-24">
@@ -6,6 +10,40 @@ const SignUp = () => {
           <h1 className="flex text-contrast-text text-2xl">
             Sign in to your account
           </h1>
+          <form
+            className="flex flex-col text-contrast-text w-full m-4 mt-8 gap-8"
+            onSubmit={handleSubmit((data) => {
+              console.log("Receive the data!", data);
+            })}
+          >
+            <input
+              {...register("username", { required: true, minLength: 8 })}
+              placeholder="Username"
+              className="h-8 border-b outline-0"
+            />
+            <input
+              {...register("email-address", { required: true })}
+              placeholder="Email"
+              className="h-8 border-b outline-0"
+            />
+            <input
+              {...register("password", { required: true, minLength: 8 })}
+              placeholder="Password"
+              className="h-8 border-b outline-0"
+            />
+            <input
+              {...register("confirm-password", {
+                required: true,
+                minLength: 8,
+              })}
+              placeholder="Confirm password"
+              className="h-8 border-b outline-0"
+            />
+            <input
+              type="submit"
+              className="self-center border border-border rounded-2xl h-8 w-3xs hover:cursor-pointer"
+            />
+          </form>
         </div>
       </div>
     </>
