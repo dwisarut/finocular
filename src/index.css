@@ -60,6 +60,10 @@
   font-family: "Alata", sans-serif;
 }
 
+@utility customBtn {
+  @apply flex justify-center text-contrast-text w-40 text-xl lato ml-8 rounded-4xl border p-1 hover:cursor-pointer items-center
+}
+
 #root {
    max-width: 100%;
    margin: 0 auto;
