@@ -5,13 +5,13 @@ const SignUp = () => {
 
   return (
     <>
-      <div className="flex container justify-center mt-24">
-        <div className="flex flex-col border border-border rounded-2xl p-8 w-4xl items-center">
+      <div className="flex flex-col container justify-center mt-24">
+        <div className="flex flex-col border border-border rounded-2xl p-8 w-xl items-center self-center">
           <h1 className="flex text-contrast-text text-2xl">
-            Sign in to your account
+            Sign up your account
           </h1>
           <form
-            className="flex flex-col text-contrast-text w-full m-4 mt-8 gap-8"
+            className="flex flex-col text-contrast-text w-3/4 m-4 mt-8 gap-8"
             onSubmit={handleSubmit((data) => {
               console.log("Receive the data!", data);
             })}
@@ -22,16 +22,19 @@ const SignUp = () => {
               className="h-8 border-b outline-0"
             />
             <input
+              type="email"
               {...register("email-address", { required: true })}
               placeholder="Email"
               className="h-8 border-b outline-0"
             />
             <input
+              type="password"
               {...register("password", { required: true, minLength: 8 })}
               placeholder="Password"
               className="h-8 border-b outline-0"
             />
             <input
+              type="password"
               {...register("confirm-password", {
                 required: true,
                 minLength: 8,

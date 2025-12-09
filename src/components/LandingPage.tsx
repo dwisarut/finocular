@@ -1,5 +1,4 @@
 import Button from "./Button";
-import Navbar from "./Navbar";
 import { ChevronRight } from "lucide-react";
 import { LinkedInLogoIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import { Link } from "react-router-dom";
@@ -8,8 +7,7 @@ const LandingPage = () => {
   return (
     <>
       <div className="flex flex-col container">
-        <Navbar />
-        <h1 className="text-contrast-text text-7xl m-8 pb-4 w-2xl h-auto alata">
+        <h1 className="text-contrast-text text-8xl m-8 pb-4 w-3xl h-auto alata">
           Financial visualizer to track your transaction
         </h1>
         <p className="text-contrast-text text-xl lato ml-8 w-xl">
