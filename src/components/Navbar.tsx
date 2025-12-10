@@ -16,7 +16,10 @@ const Navbar = () => {
     <>
       <div className="flex container bg-background m-4 justify-between">
         <a className="flex self-center" href="/">
-          <img src="/finocular_dark.svg" className="flex self-center w-36" />
+          <img
+            src="/finocular_dark.svg"
+            className="flex self-center ml-6 w-24 md:ml-0 md:w-36 h-auto"
+          />
         </a>
         <div className="flex self-center">
           {navItems.map((item) => {
