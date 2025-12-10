@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import Checkbox from "@mui/material/Checkbox";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
   const { register, handleSubmit } = useForm();
@@ -51,6 +52,14 @@ const SignUp = () => {
               type="submit"
               className="self-center border border-border rounded-2xl h-8 w-3xs hover:cursor-pointer"
             />
+            <p className="text-contrast-text self-center lato text-sm">
+              Already have an account?{" "}
+              <Link to="/login">
+                <span className="text-contrast-text hover:text-amber-300 text-sm">
+                  Log in
+                </span>
+              </Link>
+            </p>
           </form>
         </div>
       </div>
