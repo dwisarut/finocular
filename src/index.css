@@ -61,7 +61,16 @@
 }
 
 @utility customBtn {
-  @apply flex justify-center text-contrast-text w-40 text-xl lato ml-8 rounded-4xl border p-1 hover:cursor-pointer items-center
+  @apply flex justify-center text-contrast-text w-40 text-xl lato rounded-4xl border p-1 hover:cursor-pointer items-center
+}
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+input[type="password"]::-webkit-textfield-decoration-container {
+  display: none;
 }
 
 #root {
