@@ -17,7 +17,7 @@ const Button = ({ name, to, icon: Icon }: ButtonComponent) => {
       <div className="flex flex-row mt-12">
         <button
           onClick={handleNav}
-          className="customBtn hover:bg-[hsl(0_0_12%)]"
+          className="customBtn hover:bg-[hsl(0_0_12%)] ml-6 md:ml-0"
         >
           {name}
           <Icon />
