@@ -4,7 +4,11 @@ import { Link } from "react-router-dom";
 const Dashboard = () => {
   return (
     <>
-      <div className="flex flex-col container"></div>
+      <div className="flex flex-col container">
+        <h1 className="text-contrast-text text-6xl m-8 ml-0 pb-4 w-3xl h-auto alata">
+          Dashboard
+        </h1>
+      </div>
       <footer className="border-t border-border mt-24">
         <div className="flex container flex-col mt-8 mb-8">
           <a href="/" className="flex w-fit h-fit">
