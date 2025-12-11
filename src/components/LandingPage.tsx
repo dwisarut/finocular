@@ -1,21 +1,33 @@
-import Button from "./Button";
-import { ChevronRight } from "lucide-react";
+import { Button } from "./ui/button";
+import { ArrowRight } from "lucide-react";
 import { LinkedInLogoIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
+  const navigate = useNavigate();
+  const handleNavigate = (path: string) => {
+    navigate(path);
+  };
+
   return (
     <>
       <div className="flex flex-col container">
-        <h1 className="text-contrast-text text-8xl m-8 pb-4 w-3xl h-auto alata">
+        <h1 className="text-6xl md:text-8xl m-8 ml-6 md:ml-0 pb-4 w-xs md:w-3xl h-auto alata">
           Financial visualizer to track your transaction
         </h1>
-        <p className="text-contrast-text text-xl lato ml-8 w-xl">
+        <p className="text-xl lato ml-6 md:ml-0 m-8 w-[24rem] md:w-xl">
           Record your transaction history with the OCR's assistance for ease of
           use, with visualization to analyze your cash flow and spending
           behaviour.
         </p>
-        <Button name="Start here" to="/ledger" icon={ChevronRight} />
+        <Button
+          variant="outline"
+          className="flex flex-row w-42 rounded-2xl lato text-base items-center gap-4 hover:cursor-pointer"
+          onClick={() => handleNavigate("/ledger")}
+        >
+          Start here
+          <ArrowRight />
+        </Button>
       </div>
       <footer className="border-t border-border mt-24">
         <div className="flex container flex-col mt-8 mb-8">
@@ -29,7 +41,7 @@ const LandingPage = () => {
               rel="noopener noreferrer"
               className="w-fit h-fit self-center"
             >
-              <LinkedInLogoIcon className="text-contrast-text w-5 h-auto hover:text-amber-300" />
+              <LinkedInLogoIcon className="w-5 h-auto hover:text-amber-300" />
             </Link>
             <Link
               to="https://github.com/dwisarut"
@@ -37,9 +49,9 @@ const LandingPage = () => {
               rel="noopener noreferrer"
               className="w-fit h-fit self-center"
             >
-              <GitHubLogoIcon className="text-contrast-text w-5 h-auto hover:text-amber-300" />
+              <GitHubLogoIcon className="w-5 h-auto hover:text-amber-300" />
             </Link>
-            <p className="text-contrast-text text-sm lato w-xl">
+            <p className="text-sm lato w-xl">
               © 2025 Wisarut Donsri - All right reserved.
             </p>
           </div>

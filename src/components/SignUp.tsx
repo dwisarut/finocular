@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import Checkbox from "@mui/material/Checkbox";
 import { Link } from "react-router-dom";
+import { Checkbox } from "./ui/checkbox";
 
 const SignUp = () => {
   const { register, handleSubmit } = useForm();
@@ -44,8 +44,8 @@ const SignUp = () => {
               placeholder="Confirm password"
               className="h-8 border-b outline-0"
             />
-            <div className="flex flex-row items-center -ml-3">
-              <Checkbox className="w-fit" defaultChecked />
+            <div className="flex flex-row items-center gap-4">
+              <Checkbox className="hover:cursor-pointer" />
               <p>Remember me on this device</p>
             </div>
             <input

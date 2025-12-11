@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import Checkbox from "@mui/material/Checkbox";
+import { Checkbox } from "./ui/checkbox";
 
 const LogIn = () => {
   const { register, handleSubmit } = useForm();
@@ -29,8 +29,8 @@ const LogIn = () => {
               placeholder="Password"
               className="h-8 border-b outline-0"
             />
-            <div className="flex flex-row items-center -ml-3">
-              <Checkbox className="w-fit" defaultChecked />
+            <div className="flex flex-row items-center gap-4">
+              <Checkbox />
               <p>Remember me on this device</p>
             </div>
             <input
