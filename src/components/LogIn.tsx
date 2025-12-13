@@ -30,7 +30,7 @@ const LogIn = () => {
               className="h-8 border-b outline-0"
             />
             <div className="flex flex-row items-center gap-4">
-              <Checkbox />
+              <Checkbox className="hover:cursor-pointer" />
               <p>Remember me on this device</p>
             </div>
             <input
