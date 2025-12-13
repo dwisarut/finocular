@@ -1,7 +1,7 @@
 import { LinkedInLogoIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import { Link } from "react-router-dom";
 
-const Dashboard = () => {
+function Dashboard() {
   return (
     <>
       <div className="flex flex-col container">
@@ -39,5 +39,5 @@ const Dashboard = () => {
       </footer>
     </>
   );
-};
+}
 export default Dashboard;

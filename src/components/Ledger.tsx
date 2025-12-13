@@ -2,7 +2,7 @@ import { LinkedInLogoIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import { Link } from "react-router-dom";
 import LedgerTable from "./LedgerTable";
 
-const Ledger = () => {
+function Ledger() {
   return (
     <>
       <div className="flex flex-col container">
@@ -41,5 +41,5 @@ const Ledger = () => {
       </footer>
     </>
   );
-};
+}
 export default Ledger;

@@ -12,7 +12,7 @@ const navItems: NavbarItem[] = [
   { name: "Log in", href: "/login" },
 ];
 
-const Navbar = () => {
+function Navbar() {
   const location = useLocation();
   return (
     <>
@@ -47,5 +47,5 @@ const Navbar = () => {
       </div>
     </>
   );
-};
+}
 export default Navbar;

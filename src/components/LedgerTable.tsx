@@ -8,24 +8,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import rows from "./MockData";
 
-const FetchData = (
-  type: "Revenue" | "Expense",
-  value: number,
-  sender: string,
-  recipient: string
-) => {
-  // Probably fetch something from supabase
-  return { type, value, sender, recipient };
-};
-
-const rows = [
-  FetchData("Expense", 120, "Wisarut Donsri", "LINEMAN"),
-  FetchData("Revenue", 350, "Company A", "Wisarut Donsri"),
-  FetchData("Expense", 105, "Wisarut Donsri", "LINEMAN"),
-];
-
-const LedgerTable = () => {
+function LedgerTable() {
   const summation = () => {
     let sum = 0;
     for (let i = 0; i < rows.length; i++) {
@@ -64,6 +49,6 @@ const LedgerTable = () => {
       </Table>
     </>
   );
-};
+}
 
 export default LedgerTable;

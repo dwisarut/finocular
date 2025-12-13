@@ -9,7 +9,7 @@ interface FormInput {
   confirmPassword: string;
 }
 
-const SignUp = () => {
+function SignUp() {
   const {
     register,
     formState: { errors },
@@ -116,5 +116,5 @@ const SignUp = () => {
       </div>
     </>
   );
-};
+}
 export default SignUp;

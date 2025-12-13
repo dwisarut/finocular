@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Checkbox } from "./ui/checkbox";
 
-const LogIn = () => {
+function LogIn() {
   const { register, handleSubmit } = useForm();
   return (
     <>
@@ -50,5 +50,5 @@ const LogIn = () => {
       </div>
     </>
   );
-};
+}
 export default LogIn;
