@@ -1,5 +1,6 @@
 import { LinkedInLogoIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import { Link } from "react-router-dom";
+import SummarySection from "./SummaryDB";
 
 function Dashboard() {
   return (
@@ -8,6 +9,7 @@ function Dashboard() {
         <h1 className="text-contrast-text text-6xl m-8 ml-0 pb-4 w-3xl h-auto alata">
           Dashboard
         </h1>
+        <SummarySection />
       </div>
       <footer className="border-t border-border mt-24">
         <div className="flex container flex-col mt-8 mb-8">
