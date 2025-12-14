@@ -1,14 +1,39 @@
 import { LinkedInLogoIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import { Link } from "react-router-dom";
 import LedgerTable from "./LedgerTable";
+import { Button } from "./ui/button";
+import { Plus, FilePenLine, Trash } from "lucide-react";
 
 function Ledger() {
   return (
     <>
-      <div className="flex flex-col container">
+      <div className="flex flex-col container gap-5">
         <h1 className="text-contrast-text text-6xl m-8 ml-0 pb-4 w-3xl h-auto alata">
           Ledger
         </h1>
+        <div className="flex justify-end items-center gap-4">
+          <Button
+            variant="outline"
+            className="rounded-2xl w-24 hover:cursor-pointer"
+          >
+            Add
+            <Plus />
+          </Button>
+          <Button
+            variant="outline"
+            className="rounded-2xl w-24 hover:cursor-pointer"
+          >
+            Edit
+            <FilePenLine />
+          </Button>
+          <Button
+            variant="outline"
+            className="rounded-2xl w-24 hover:cursor-pointer border-red-600 text-red-600 hover:bg-red-600"
+          >
+            Delete
+            <Trash />
+          </Button>
+        </div>
         <LedgerTable />
       </div>
       <footer className="border-t border-border mt-24">
