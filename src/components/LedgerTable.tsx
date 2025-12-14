@@ -25,6 +25,7 @@ function LedgerTable() {
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">Type</TableHead>
+            <TableHead>Date</TableHead>
             <TableHead>Sender</TableHead>
             <TableHead>Recipient</TableHead>
             <TableHead className="text-right">Amount (THB)</TableHead>
@@ -34,6 +35,7 @@ function LedgerTable() {
           {rows.map((rec) => (
             <TableRow key={rec.type}>
               <TableCell className="font-medium">{rec.type}</TableCell>
+              <TableCell>{rec.date}</TableCell>
               <TableCell>{rec.sender}</TableCell>
               <TableCell>{rec.recipient}</TableCell>
               <TableCell className="text-right">{rec.value}</TableCell>
@@ -42,7 +44,7 @@ function LedgerTable() {
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={3}>Total</TableCell>
+            <TableCell colSpan={4}>Total</TableCell>
             <TableCell className="text-right">{summation()}</TableCell>
           </TableRow>
         </TableFooter>
