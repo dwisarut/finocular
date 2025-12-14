@@ -9,15 +9,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import rows from "./MockData";
+import summation from "./Summation";
 
 function LedgerTable() {
-  const summation = () => {
-    let sum = 0;
-    for (let i = 0; i < rows.length; i++) {
-      sum += rows[i].value;
-    }
-    return sum;
-  };
   return (
     <>
       <Table>
