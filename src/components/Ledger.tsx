@@ -28,7 +28,7 @@ function Ledger() {
           </Button>
           <Button
             variant="outline"
-            className="rounded-2xl w-24 hover:cursor-pointer border-red-600 text-red-600 hover:bg-red-600"
+            className="rounded-2xl w-24 hover:cursor-pointer border-red-950 text-red-600 hover:bg-red-600"
           >
             Delete
             <Trash />
