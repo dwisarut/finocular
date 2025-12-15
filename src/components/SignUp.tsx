@@ -1,6 +1,7 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Checkbox } from "./ui/checkbox";
+import { Label } from "./ui/label";
 
 interface FormInput {
   username: string;
@@ -96,8 +97,10 @@ function SignUp() {
             )}
 
             <div className="flex flex-row items-center gap-4">
-              <Checkbox className="hover:cursor-pointer" />
-              <p>Remember me on this device</p>
+              <Checkbox id="remember-device" className="hover:cursor-pointer" />
+              <Label htmlFor="remember-device">
+                Remember me on this device
+              </Label>
             </div>
             <input
               type="submit"

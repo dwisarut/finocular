@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Checkbox } from "./ui/checkbox";
+import { Label } from "./ui/label";
 
 function LogIn() {
   const { register, handleSubmit } = useForm();
@@ -30,8 +31,10 @@ function LogIn() {
               className="h-8 border-b outline-0"
             />
             <div className="flex flex-row items-center gap-4">
-              <Checkbox className="hover:cursor-pointer" />
-              <p>Remember me on this device</p>
+              <Checkbox id="remember-device" className="hover:cursor-pointer" />
+              <Label htmlFor="remember-device">
+                Remember me on this device
+              </Label>
             </div>
             <input
               type="submit"
