@@ -27,7 +27,7 @@ function LedgerTable() {
         </TableHeader>
         <TableBody>
           {rows.map((rec) => (
-            <TableRow key={rec.type}>
+            <TableRow key={rec.ref}>
               <TableCell className="font-medium">{rec.type}</TableCell>
               <TableCell>{rec.date}</TableCell>
               <TableCell>{rec.sender}</TableCell>
