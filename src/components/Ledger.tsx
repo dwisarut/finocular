@@ -2,7 +2,8 @@ import { LinkedInLogoIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import { Link } from "react-router-dom";
 import LedgerTable from "./LedgerTable";
 import { Button } from "./ui/button";
-import { Plus, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
+import AddButton from "./AddButton";
 
 function Ledger() {
   return (
@@ -12,13 +13,7 @@ function Ledger() {
           Ledger
         </h1>
         <div className="flex justify-end items-center gap-4">
-          <Button
-            variant="outline"
-            className="rounded-2xl w-24 hover:cursor-pointer"
-          >
-            Add
-            <Plus />
-          </Button>
+          <AddButton />
           <Button
             variant="outline"
             className="rounded-2xl w-24 hover:cursor-pointer border-red-950 text-red-600 hover:bg-red-600"
