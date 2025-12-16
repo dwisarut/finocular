@@ -119,6 +119,35 @@ function AddButton() {
                 placeholder="Recipient name"
                 className="rounded-[0.5rem]"
               />
+              <div className="flex flex-col gap-3">
+                <Label htmlFor="categories">Categories</Label>
+                <Select>
+                  <SelectTrigger
+                    id="categories"
+                    className="w-full rounded-[0.5rem] hover:cursor-pointer"
+                  >
+                    <SelectValue placeholder="Select categories" />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-[0.5rem] w-full">
+                    <SelectGroup>
+                      <SelectLabel>Categories</SelectLabel>
+                      <SelectItem value="revenue">
+                        Saving & Investment
+                      </SelectItem>
+                      <SelectItem value="shopping">Shopping</SelectItem>
+                      <SelectItem value="entertainment">
+                        Entertainment
+                      </SelectItem>
+                      <SelectItem value="billing">Billing</SelectItem>
+                      <SelectItem value="drinkandfood">
+                        Drinking & food
+                      </SelectItem>
+                      <SelectItem value="vacation">Vacation</SelectItem>
+                      <SelectItem value="others">Others</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
               <Input
                 type="number"
                 placeholder="Amount in THB"
