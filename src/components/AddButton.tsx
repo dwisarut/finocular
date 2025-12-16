@@ -23,6 +23,7 @@ import { Plus, ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
 import { Popover, PopoverTrigger, PopoverContent } from "./ui/popover";
 import { Calendar } from "./ui/calendar";
+import { Input } from "./ui/input";
 
 function AddButton() {
   const [open, setOpen] = useState(false);
@@ -48,49 +49,81 @@ function AddButton() {
                 Record your latest transaction, with manual input or OCR.
               </DialogDescription>
             </DialogHeader>
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="type">Type</Label>
-              <Select>
-                <SelectTrigger id="type" className="w-[140px] rounded-[0.5rem]">
-                  <SelectValue placeholder="Select types" />
-                </SelectTrigger>
-                <SelectContent className="rounded-[0.5rem] w-[140px]">
-                  <SelectGroup>
-                    <SelectLabel>Types</SelectLabel>
-                    <SelectItem value="revenue">Revenue</SelectItem>
-                    <SelectItem value="expense">Expense</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <Label htmlFor="date" className="px-1">
-                Date of birth
-              </Label>
-              <Popover open={open} onOpenChange={setOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    id="date"
-                    className="w-[140px] justify-between font-normal rounded-[0.5rem]"
-                  >
-                    {date ? date.toLocaleDateString() : "Select date"}
-                    <ChevronDownIcon />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent
-                  className="w-auto overflow-hidden p-0 rounded-[0.5rem]"
-                  align="start"
-                >
-                  <Calendar
-                    mode="single"
-                    selected={date}
-                    captionLayout="dropdown"
-                    onSelect={(date) => {
-                      setDate(date);
-                      setOpen(false);
-                    }}
-                  />
-                </PopoverContent>
-              </Popover>
+            <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-3">
+                <Label htmlFor="receipt-image">Receipt image for OCR</Label>
+                <Input
+                  id="receipt-image"
+                  type="file"
+                  className="rounded-[0.5rem]"
+                />
+              </div>
+              <div className="flex flex-row justify-between">
+                <div className="flex flex-col gap-3">
+                  <Label htmlFor="type">Type</Label>
+                  <Select>
+                    <SelectTrigger
+                      id="type"
+                      className="w-[140px] rounded-[0.5rem] hover:cursor-pointer"
+                    >
+                      <SelectValue placeholder="Select types" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-[0.5rem] w-[140px]">
+                      <SelectGroup>
+                        <SelectLabel>Types</SelectLabel>
+                        <SelectItem value="revenue">Revenue</SelectItem>
+                        <SelectItem value="expense">Expense</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex flex-col gap-3">
+                  <Label htmlFor="date" className="px-1">
+                    Transaction Date
+                  </Label>
+                  <Popover open={open} onOpenChange={setOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        id="date"
+                        className="w-[200px] justify-between font-normal rounded-[0.5rem] hover:cursor-pointer"
+                      >
+                        {date ? date.toLocaleDateString() : "Select date"}
+                        <ChevronDownIcon />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent
+                      className="w-auto overflow-hidden p-0 rounded-[0.5rem]"
+                      align="start"
+                    >
+                      <Calendar
+                        mode="single"
+                        selected={date}
+                        captionLayout="dropdown"
+                        onSelect={(date) => {
+                          setDate(date);
+                          setOpen(false);
+                        }}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </div>
+              <Input
+                type="text"
+                placeholder="Sender name"
+                className="rounded-[0.5rem]"
+              />
+              <Input
+                type="text"
+                placeholder="Recipient name"
+                className="rounded-[0.5rem]"
+              />
+              <Input
+                type="number"
+                placeholder="Amount in THB"
+                className="rounded-[0.5rem]"
+              />
             </div>
             <DialogFooter>
               <DialogClose asChild>
