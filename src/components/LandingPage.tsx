@@ -12,17 +12,18 @@ const LandingPage = () => {
   return (
     <>
       <div className="flex flex-col container">
-        <h1 className="text-6xl md:text-8xl m-8 ml-6 md:ml-0 pb-4 w-xs md:w-3xl h-auto alata">
-          Financial visualizer to track your transaction
+        <h1 className="text-[hsl(0,0%,90%)] text-6xl md:text-8xl m-8 ml-6 md:ml-0 pb-4 w-xs md:w-3xl h-auto alata">
+          Financial visualizer to track your{" "}
+          <span className="text-amber-300">transaction</span>
         </h1>
-        <p className="text-xl lato ml-6 md:ml-0 m-8 w-[24rem] md:w-xl">
+        <p className="text-[hsl(0,0%,90%)] text-xl lato ml-6 md:ml-0 m-8 w-[24rem] md:w-xl">
           Record your transaction history with the OCR's assistance for ease of
           use, with visualization to analyze your cash flow and spending
           behaviour.
         </p>
         <Button
           variant="outline"
-          className="flex flex-row w-42 rounded-2xl lato text-base items-center gap-4 hover:cursor-pointer"
+          className="flex flex-row w-42 rounded-2xl lato text-base items-center gap-4 ml-6 md:ml-0 hover:cursor-pointer"
           onClick={() => handleNavigate("/ledger")}
         >
           Start here
