@@ -4,6 +4,7 @@ import LedgerTable from "./LedgerTable";
 import { Button } from "./ui/button";
 import { Trash } from "lucide-react";
 import AddButton from "./AddButton";
+import PagePagination from "./Pagination";
 
 function Ledger() {
   return (
@@ -23,6 +24,7 @@ function Ledger() {
           </Button>
         </div>
         <LedgerTable />
+        <PagePagination />
       </div>
       <footer className="border-t border-border mt-24">
         <div className="flex container flex-col mt-8 mb-8">
