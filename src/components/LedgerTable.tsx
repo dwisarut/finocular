@@ -26,15 +26,19 @@ function LedgerTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {rows.map((rec) => (
-            <TableRow key={rec.ref}>
-              <TableCell className="font-medium">{rec.type}</TableCell>
-              <TableCell>{rec.date}</TableCell>
-              <TableCell>{rec.sender}</TableCell>
-              <TableCell>{rec.recipient}</TableCell>
-              <TableCell className="text-right">{rec.value}</TableCell>
-            </TableRow>
-          ))}
+          {rows.map((rec) => {
+            const displayDate = new Date(rec.timestamp).toLocaleDateString();
+
+            return (
+              <TableRow key={rec.ref}>
+                <TableCell className="font-medium">{rec.type}</TableCell>
+                <TableCell>{displayDate}</TableCell>
+                <TableCell>{rec.sender}</TableCell>
+                <TableCell>{rec.recipient}</TableCell>
+                <TableCell className="text-right">{rec.value}</TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
         <TableFooter>
           <TableRow>
