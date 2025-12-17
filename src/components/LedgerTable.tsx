@@ -27,7 +27,14 @@ function LedgerTable() {
         </TableHeader>
         <TableBody>
           {rows.map((rec) => {
-            const displayDate = new Date(rec.timestamp).toLocaleDateString();
+            const displayDate = new Date(rec.timestamp).toLocaleDateString(
+              "en-GB",
+              {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              }
+            );
 
             return (
               <TableRow key={rec.ref}>
