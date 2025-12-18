@@ -22,6 +22,7 @@ function LedgerTable() {
             <TableHead>Date</TableHead>
             <TableHead>Sender</TableHead>
             <TableHead>Recipient</TableHead>
+            <TableHead>Description</TableHead>
             <TableHead className="text-right">Amount (THB)</TableHead>
           </TableRow>
         </TableHeader>
@@ -38,18 +39,19 @@ function LedgerTable() {
 
             return (
               <TableRow key={rec.ref}>
-                <TableCell className="font-medium">{rec.type}</TableCell>
-                <TableCell>{displayDate}</TableCell>
-                <TableCell>{rec.sender}</TableCell>
-                <TableCell>{rec.recipient}</TableCell>
-                <TableCell className="text-right">{rec.value}</TableCell>
+                <TableCell className="font-medium lato">{rec.type}</TableCell>
+                <TableCell className="lato">{displayDate}</TableCell>
+                <TableCell className="lato">{rec.sender}</TableCell>
+                <TableCell className="lato">{rec.recipient}</TableCell>
+                <TableCell className="lato">{rec.desc}</TableCell>
+                <TableCell className="text-right lato">{rec.value}</TableCell>
               </TableRow>
             );
           })}
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={4}>Total</TableCell>
+            <TableCell colSpan={5}>Total</TableCell>
             <TableCell className="text-right">{summation()}</TableCell>
           </TableRow>
         </TableFooter>
