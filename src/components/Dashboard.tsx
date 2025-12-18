@@ -1,15 +1,17 @@
 import { LinkedInLogoIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import { Link } from "react-router-dom";
 import SummarySection from "./SummaryDB";
+import TransactionSection from "./RecentTransaction";
 
 function Dashboard() {
   return (
     <>
-      <div className="flex flex-col container">
+      <div className="flex flex-col container gap-8">
         <h1 className="text-contrast-text text-6xl m-8 ml-0 pb-4 w-3xl h-auto alata">
           Dashboard
         </h1>
         <SummarySection />
+        <TransactionSection />
       </div>
       <footer className="border-t border-border mt-24">
         <div className="flex container flex-col mt-8 mb-8">
