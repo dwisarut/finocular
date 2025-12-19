@@ -1,18 +1,18 @@
 // controllers/transaction.controller.ts
-import { insertTransaction, type Transaction } from "@/models/transactions.model";
+import { insertTransaction, type NewTransaction, type TransactionType } from "@/models/transactions.model";
 
 type TransactionForm = {
-  type: Transaction["type"];
+  type: TransactionType;
   value: string;
   sender: string;
   recipient: string;
   desc: string;
 };
 
-export async function submitTransaction(form:TransactionForm, date: Date | undefined) {
+export async function submitTransaction(form: TransactionForm, date: Date | undefined) {
   if (!date) throw new Error("Date required");
 
-  const tx: Transaction = {
+  const tx: NewTransaction = {
     type: form.type,
     timestamp: date.toISOString(),
     value: Number(form.value),
