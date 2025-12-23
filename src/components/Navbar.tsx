@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
 
 interface NavbarItem {
   name: string;
@@ -9,11 +8,9 @@ interface NavbarItem {
 const navItems: NavbarItem[] = [
   { name: "Dashboard", href: "/dashboard" },
   { name: "Ledger", href: "/ledger" },
-  { name: "Log in", href: "/login" },
 ];
 
 function Navbar() {
-  const location = useLocation();
   return (
     <>
       <div className="flex container bg-background m-4 justify-between">
@@ -25,20 +22,12 @@ function Navbar() {
         </a>
         <div className="flex self-center">
           {navItems.map((item) => {
-            const isLogin = item.name === "Log in";
-            const isInLogin =
-              location.pathname === "/login" || location.pathname === "/signup";
-
-            const className = isLogin
-              ? "text-contrast-text ml-8 pl-4 pr-4 self-center lato hover:bg-[hsl(0_0_12%)] border border-border rounded-2xl"
-              : "text-contrast-text pl-4 pr-4 self-center lato hover:text-amber-300";
-
-            if (isInLogin) {
-              return null;
-            }
-
             return (
-              <Link className={className} key={item.name} to={item.href}>
+              <Link
+                className="text-contrast-text pl-4 pr-4 self-center lato hover:text-amber-300"
+                key={item.name}
+                to={item.href}
+              >
                 <span>{item.name}</span>
               </Link>
             );
