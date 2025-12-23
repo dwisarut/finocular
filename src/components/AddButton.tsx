@@ -120,13 +120,13 @@ function AddButton() {
                 className="rounded-[0.5rem]"
               />
               <div className="flex flex-col gap-3">
-                <Label htmlFor="categories">Categories</Label>
+                <Label htmlFor="category">Category</Label>
                 <Select>
                   <SelectTrigger
-                    id="categories"
+                    id="category"
                     className="w-full rounded-[0.5rem] hover:cursor-pointer"
                   >
-                    <SelectValue placeholder="Select categories" />
+                    <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent className="rounded-[0.5rem] w-full">
                     <SelectGroup>
