@@ -71,8 +71,8 @@ function AddButton() {
                     <SelectContent className="rounded-[0.5rem] w-[140px]">
                       <SelectGroup>
                         <SelectLabel>Types</SelectLabel>
-                        <SelectItem value="revenue">Revenue</SelectItem>
-                        <SelectItem value="expense">Expense</SelectItem>
+                        <SelectItem value="Revenue">Revenue</SelectItem>
+                        <SelectItem value="Expense">Expense</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -131,19 +131,19 @@ function AddButton() {
                   <SelectContent className="rounded-[0.5rem] w-full">
                     <SelectGroup>
                       <SelectLabel>Categories</SelectLabel>
-                      <SelectItem value="revenue">
+                      <SelectItem value="Saving-investment">
                         Saving & Investment
                       </SelectItem>
-                      <SelectItem value="shopping">Shopping</SelectItem>
-                      <SelectItem value="entertainment">
+                      <SelectItem value="Shopping">Shopping</SelectItem>
+                      <SelectItem value="Entertainment">
                         Entertainment
                       </SelectItem>
-                      <SelectItem value="billing">Billing</SelectItem>
-                      <SelectItem value="drinkandfood">
+                      <SelectItem value="Billing">Billing</SelectItem>
+                      <SelectItem value="Drink-food">
                         Drinking & food
                       </SelectItem>
-                      <SelectItem value="vacation">Vacation</SelectItem>
-                      <SelectItem value="others">Others</SelectItem>
+                      <SelectItem value="Vacation">Vacation</SelectItem>
+                      <SelectItem value="Others">Others</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
