@@ -1,14 +1,14 @@
-import pool from "../src/database";
 import express from "express";
+import cors from "cors";
+import router from "./transactions.route";
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
-app.get('/api/health', async (_req, res) => {
-    const result = await pool.query('SELECT 1');
-    res.json({ok: true, db: result.rows[0]});
-});
+app.use("/api/transactions", router);
+
 
 app.listen(3000, () => {
-    console.log("server is running on http://localhost:3000")
+    console.log(`server is running on port 3000`)
 })
