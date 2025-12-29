@@ -131,19 +131,20 @@ function AddButton() {
                   <SelectContent className="rounded-[0.5rem] w-full">
                     <SelectGroup>
                       <SelectLabel>Categories</SelectLabel>
-                      <SelectItem value="Saving-investment">
+                      <SelectItem value="income">Income</SelectItem>
+                      <SelectItem value="saving_investment">
                         Saving & Investment
                       </SelectItem>
-                      <SelectItem value="Shopping">Shopping</SelectItem>
-                      <SelectItem value="Entertainment">
+                      <SelectItem value="shopping">Shopping</SelectItem>
+                      <SelectItem value="entertainment">
                         Entertainment
                       </SelectItem>
-                      <SelectItem value="Billing">Billing</SelectItem>
-                      <SelectItem value="Drink-food">
+                      <SelectItem value="billing">Billing</SelectItem>
+                      <SelectItem value="drinking_food">
                         Drinking & food
                       </SelectItem>
-                      <SelectItem value="Vacation">Vacation</SelectItem>
-                      <SelectItem value="Others">Others</SelectItem>
+                      <SelectItem value="vacation">Vacation</SelectItem>
+                      <SelectItem value="others">Others</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
