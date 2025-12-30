@@ -26,7 +26,8 @@ import { Calendar } from "./ui/calendar";
 import { Input } from "./ui/input";
 
 function AddButton() {
-  const [open, setOpen] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [openCalendar, setOpenCalendar] = useState(false);
   const [type, setType] = useState<"revenue" | "expense" | "">("");
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [sender, setSender] = useState("");
@@ -69,8 +70,6 @@ function AddButton() {
         setRecipient("");
         setCategory("");
         setAmount("");
-
-        console.log("Transaction added successfully!");
       } else {
         console.error("Failed to add transaction");
       }
@@ -81,7 +80,7 @@ function AddButton() {
 
   return (
     <>
-      <Dialog>
+      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
         <form>
           <DialogTrigger asChild>
             <Button
@@ -134,7 +133,7 @@ function AddButton() {
                   <Label htmlFor="date" className="px-1">
                     Transaction Date
                   </Label>
-                  <Popover open={open} onOpenChange={setOpen}>
+                  <Popover open={openCalendar} onOpenChange={setOpenCalendar}>
                     <PopoverTrigger asChild>
                       <Button
                         variant="outline"
@@ -155,7 +154,7 @@ function AddButton() {
                         captionLayout="dropdown"
                         onSelect={(date) => {
                           setDate(date);
-                          setOpen(false);
+                          setOpenCalendar(false);
                         }}
                       />
                     </PopoverContent>
@@ -246,6 +245,7 @@ function AddButton() {
                 className="rounded-[0.5rem] hover:cursor-pointer"
                 onClick={(e) => {
                   onSubmitForm(e);
+                  setOpenDialog(false);
                 }}
               >
                 Save changes
