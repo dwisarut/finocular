@@ -25,7 +25,7 @@ const createTransaction = async (req: Request, res: Response) => {
 // READ (GET ALL TRANSACTIONS)
 const fetchTransactions = async (req: Request, res: Response) => {
     try {
-        const allTransactions = await pool.query(`SELECT * FROM transactions ORDER BY date DESC`);
+        const allTransactions = await pool.query(`SELECT * FROM transactions ORDER BY date DESC, id DESC`);
         res.status(200).json(allTransactions.rows);
     } catch (error) {
         if (error instanceof Error)
