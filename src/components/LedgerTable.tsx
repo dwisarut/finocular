@@ -28,6 +28,17 @@ type Transaction = {
   amount: string; // NUMERIC comes as string from Postgres
 };
 
+const categoryLists = {
+  income: "Income",
+  saving_investment: "Saving & Investment",
+  shopping: "Shopping",
+  entertainment: "Entertainment",
+  billing: "Billing",
+  drinking_food: "Drinking & Food",
+  vacation: "Vacation",
+  other: "Other",
+};
+
 function LedgerTable() {
   const [lists, setLists] = useState<Transaction[]>([]);
 
@@ -92,15 +103,19 @@ function LedgerTable() {
                   year: "numeric",
                 }
               );
+              const displayType =
+                list.type === "expense" ? "Expense" : "Revenue";
+
+              const displayCategory = categoryLists[list.category];
               return (
                 <TableRow key={list.id}>
                   <TableCell className="font-medium lato">
-                    {list.type}
+                    {displayType}
                   </TableCell>
                   <TableCell className="lato">{displayDate}</TableCell>
                   <TableCell className="lato">{list.sender}</TableCell>
                   <TableCell className="lato">{list.recipient}</TableCell>
-                  <TableCell className="lato">{list.category}</TableCell>
+                  <TableCell className="lato">{displayCategory}</TableCell>
                   <TableCell className="text-right lato">
                     {Number(list.amount)}
                   </TableCell>
