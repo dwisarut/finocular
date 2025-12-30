@@ -14,7 +14,7 @@ function TransactionSection() {
             <ScrollArea className="w-full whitespace-nowrap">
               <div className="flex flex-row gap-4 p-4">
                 {rows.map((data) => {
-                  const isRevenue = data.type === "Revenue";
+                  const isRevenue = data.type === "revenue";
 
                   if (isRevenue)
                     return (
