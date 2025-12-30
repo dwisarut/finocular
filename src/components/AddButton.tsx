@@ -72,6 +72,7 @@ function AddButton({ onSuccess }: { onSuccess: () => void }) {
         setAmount("");
 
         onSuccess();
+        setOpenDialog(false);
       } else {
         console.error("Failed to add transaction");
       }
@@ -247,7 +248,6 @@ function AddButton({ onSuccess }: { onSuccess: () => void }) {
                 className="rounded-[0.5rem] hover:cursor-pointer"
                 onClick={(e) => {
                   onSubmitForm(e);
-                  setOpenDialog(false);
                 }}
               >
                 Save changes
