@@ -47,7 +47,6 @@ function LedgerTable() {
       try {
         const response = await fetch("http://localhost:3000/api/transactions");
         const jsonData = await response.json();
-        console.log(jsonData);
 
         setLists(jsonData);
       } catch (err) {
