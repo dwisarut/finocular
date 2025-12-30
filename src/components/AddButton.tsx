@@ -102,11 +102,7 @@ function AddButton() {
             <div className="flex flex-col gap-5">
               <div className="flex flex-col gap-3">
                 <Label htmlFor="receipt-image">Receipt image for OCR</Label>
-                <Input
-                  id="receipt-image"
-                  type="file"
-                  className="rounded-[0.5rem]"
-                />
+                <Input id="receipt-image" type="file" />
               </div>
               <div className="flex flex-row justify-between">
                 <div className="flex flex-col gap-3">
@@ -170,7 +166,6 @@ function AddButton() {
                 type="text"
                 placeholder="Sender name"
                 name="sender_name"
-                className="rounded-[0.5rem]"
                 value={sender}
                 onChange={(e) => setSender(e.target.value)}
               />
@@ -178,7 +173,6 @@ function AddButton() {
                 type="text"
                 placeholder="Recipient name"
                 name="recipient_name"
-                className="rounded-[0.5rem]"
                 value={recipient}
                 onChange={(e) => setRecipient(e.target.value)}
               />
@@ -232,7 +226,6 @@ function AddButton() {
                 type="number"
                 placeholder="Amount in THB"
                 name="money_amount"
-                className="rounded-[0.5rem]"
                 value={amount}
                 onChange={(e) => {
                   setAmount(e.target.value);
