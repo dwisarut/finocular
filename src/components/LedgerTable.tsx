@@ -8,10 +8,59 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import rows from "./MockData";
-import summation from "./Summation";
+import { useEffect, useState } from "react";
+
+type Transaction = {
+  id: number;
+  type: "revenue" | "expense";
+  date: string; // ISO string from API
+  sender: string;
+  recipient: string;
+  category:
+    | "income"
+    | "saving_investment"
+    | "shopping"
+    | "entertainment"
+    | "billing"
+    | "drinking_food"
+    | "vacation"
+    | "other";
+  amount: string; // NUMERIC comes as string from Postgres
+};
 
 function LedgerTable() {
+  const [lists, setLists] = useState<Transaction[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/transactions");
+        const jsonData = await response.json();
+        console.log(jsonData);
+
+        setLists(jsonData);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const summation = () => {
+    let sum = 0;
+
+    for (let i = 0; i < lists.length; i++) {
+      if (lists[i].type === "expense") {
+        sum -= Number(lists[i].amount);
+      } else {
+        sum += Number(lists[i].amount);
+      }
+    }
+
+    return sum;
+  };
+
   return (
     <>
       <Table>
@@ -27,15 +76,15 @@ function LedgerTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {rows.length === 0 ? (
+          {lists.length === 0 ? (
             <TableRow>
               <TableCell className="font-medium lato text-center" colSpan={6}>
                 Add new transaction
               </TableCell>
             </TableRow>
           ) : (
-            rows.map((rec) => {
-              const displayDate = new Date(rec.timestamp).toLocaleDateString(
+            lists.map((list) => {
+              const displayDate = new Date(list.date).toLocaleDateString(
                 "en-GB",
                 {
                   day: "2-digit",
@@ -44,13 +93,17 @@ function LedgerTable() {
                 }
               );
               return (
-                <TableRow key={rec.ref}>
-                  <TableCell className="font-medium lato">{rec.type}</TableCell>
+                <TableRow key={list.id}>
+                  <TableCell className="font-medium lato">
+                    {list.type}
+                  </TableCell>
                   <TableCell className="lato">{displayDate}</TableCell>
-                  <TableCell className="lato">{rec.sender}</TableCell>
-                  <TableCell className="lato">{rec.recipient}</TableCell>
-                  <TableCell className="lato">{rec.desc}</TableCell>
-                  <TableCell className="text-right lato">{rec.value}</TableCell>
+                  <TableCell className="lato">{list.sender}</TableCell>
+                  <TableCell className="lato">{list.recipient}</TableCell>
+                  <TableCell className="lato">{list.category}</TableCell>
+                  <TableCell className="text-right lato">
+                    {Number(list.amount)}
+                  </TableCell>
                 </TableRow>
               );
             })
