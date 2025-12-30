@@ -25,7 +25,7 @@ import { Popover, PopoverTrigger, PopoverContent } from "./ui/popover";
 import { Calendar } from "./ui/calendar";
 import { Input } from "./ui/input";
 
-function AddButton() {
+function AddButton({ onSuccess }: { onSuccess: () => void }) {
   const [openDialog, setOpenDialog] = useState(false);
   const [openCalendar, setOpenCalendar] = useState(false);
   const [type, setType] = useState<"revenue" | "expense" | "">("");
@@ -70,6 +70,8 @@ function AddButton() {
         setRecipient("");
         setCategory("");
         setAmount("");
+
+        onSuccess();
       } else {
         console.error("Failed to add transaction");
       }

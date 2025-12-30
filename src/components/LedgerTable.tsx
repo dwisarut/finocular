@@ -39,7 +39,7 @@ const categoryLists = {
   other: "Other",
 };
 
-function LedgerTable() {
+function LedgerTable({ refreshKey }: { refreshKey: number }) {
   const [lists, setLists] = useState<Transaction[]>([]);
 
   useEffect(() => {
@@ -55,7 +55,7 @@ function LedgerTable() {
     };
 
     fetchData();
-  }, []);
+  }, [refreshKey]);
 
   const summation = () => {
     let sum = 0;

@@ -1,3 +1,5 @@
+// Ledger.tsx
+
 import { LinkedInLogoIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import { Link } from "react-router-dom";
 import LedgerTable from "./LedgerTable";
@@ -5,8 +7,15 @@ import { Button } from "./ui/button";
 import { Trash } from "lucide-react";
 import AddButton from "./AddButton";
 import PagePagination from "./Pagination";
+import { useState } from "react";
 
 function Ledger() {
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const handleTransactionChange = () => {
+    setRefreshKey((prev) => prev + 1);
+  };
+
   return (
     <>
       <div className="flex flex-col container gap-5">
@@ -14,7 +23,7 @@ function Ledger() {
           Ledger
         </h1>
         <div className="flex justify-end items-center gap-4">
-          <AddButton />
+          <AddButton onSuccess={handleTransactionChange} />
           <Button
             variant="outline"
             className="rounded-2xl w-24 hover:cursor-pointer border-red-950 text-red-600 hover:bg-red-600"
@@ -23,7 +32,7 @@ function Ledger() {
             <Trash />
           </Button>
         </div>
-        <LedgerTable />
+        <LedgerTable refreshKey={refreshKey} />
         <PagePagination />
       </div>
       <footer className="border-t border-border mt-24">
