@@ -40,7 +40,13 @@ const categoryLists = {
   other: "Other",
 };
 
-function LedgerTable({ refreshKey }: { refreshKey: number }) {
+function LedgerTable({
+  refreshKey,
+  onDelete,
+}: {
+  refreshKey: number;
+  onDelete: () => void;
+}) {
   const [lists, setLists] = useState<Transaction[]>([]);
 
   useEffect(() => {
@@ -57,6 +63,23 @@ function LedgerTable({ refreshKey }: { refreshKey: number }) {
 
     fetchData();
   }, [refreshKey]);
+
+  const deleteTransaction = async (id: number) => {
+    try {
+      const deleteList = await fetch(
+        `http://localhost:3000/api/transactions/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (deleteList.ok) {
+        onDelete();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const summation = () => {
     let sum = 0;
@@ -118,7 +141,12 @@ function LedgerTable({ refreshKey }: { refreshKey: number }) {
                     <Pencil2Icon />
                   </TableCell>
                   <TableCell>
-                    <TrashIcon />
+                    <TrashIcon
+                      className="hover:text-red-600 hover:cursor-pointer"
+                      onClick={() => {
+                        deleteTransaction(list.id);
+                      }}
+                    />
                   </TableCell>
                   <TableCell className="lato">{displayDate}</TableCell>
                   <TableCell className="lato">{list.sender}</TableCell>
@@ -134,7 +162,7 @@ function LedgerTable({ refreshKey }: { refreshKey: number }) {
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={5}>Total</TableCell>
+            <TableCell colSpan={7}>Total</TableCell>
             <TableCell className="text-right">{summation()}</TableCell>
           </TableRow>
         </TableFooter>
