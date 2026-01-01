@@ -9,7 +9,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useEffect, useState } from "react";
-import { Pencil2Icon, TrashIcon } from "@radix-ui/react-icons";
+import { TrashIcon } from "@radix-ui/react-icons";
+import EditButton from "./EditButton";
 
 type Transaction = {
   id: number;
@@ -40,7 +41,13 @@ const categoryLists = {
   others: "Others",
 };
 
-function LedgerTable({ refreshKey }: { refreshKey: number }) {
+function LedgerTable({
+  refreshKey,
+  onTransactionChange,
+}: {
+  refreshKey: number;
+  onTransactionChange: () => void;
+}) {
   const [lists, setLists] = useState<Transaction[]>([]);
 
   useEffect(() => {
@@ -90,9 +97,9 @@ function LedgerTable({ refreshKey }: { refreshKey: number }) {
         <TableCaption>A list of your recent transactions.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-20">Type</TableHead>
-            <TableHead className="w-2.5" />
-            <TableHead className="w-2.5" />
+            <TableHead className="w-[70px]">Type</TableHead>
+            <TableHead className="w-[15px]" />
+            <TableHead className="w-[15px]" />
             <TableHead>Date</TableHead>
             <TableHead>Sender</TableHead>
             <TableHead>Recipient</TableHead>
@@ -127,11 +134,14 @@ function LedgerTable({ refreshKey }: { refreshKey: number }) {
                     {displayType}
                   </TableCell>
                   <TableCell>
-                    <Pencil2Icon />
+                    <EditButton
+                      transaction={list}
+                      onSuccess={onTransactionChange}
+                    />
                   </TableCell>
                   <TableCell>
                     <TrashIcon
-                      className="hover:text-red-600 hover:cursor-pointer"
+                      className="hover:text-red-600 hover:cursor-pointer self-center"
                       onClick={() => {
                         deleteTransaction(list.id);
                       }}
