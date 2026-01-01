@@ -9,6 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useEffect, useState } from "react";
+import { Pencil2Icon, TrashIcon } from "@radix-ui/react-icons";
 
 type Transaction = {
   id: number;
@@ -77,7 +78,9 @@ function LedgerTable({ refreshKey }: { refreshKey: number }) {
         <TableCaption>A list of your recent transactions.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">Type</TableHead>
+            <TableHead className="w-20">Type</TableHead>
+            <TableHead className="w-2.5" />
+            <TableHead className="w-2.5" />
             <TableHead>Date</TableHead>
             <TableHead>Sender</TableHead>
             <TableHead>Recipient</TableHead>
@@ -110,6 +113,12 @@ function LedgerTable({ refreshKey }: { refreshKey: number }) {
                 <TableRow key={list.id}>
                   <TableCell className="font-medium lato">
                     {displayType}
+                  </TableCell>
+                  <TableCell>
+                    <Pencil2Icon />
+                  </TableCell>
+                  <TableCell>
+                    <TrashIcon />
                   </TableCell>
                   <TableCell className="lato">{displayDate}</TableCell>
                   <TableCell className="lato">{list.sender}</TableCell>
