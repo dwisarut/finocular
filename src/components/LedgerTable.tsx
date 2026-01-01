@@ -25,7 +25,7 @@ type Transaction = {
     | "billing"
     | "drinking_food"
     | "vacation"
-    | "other";
+    | "others";
   amount: string; // NUMERIC comes as string from Postgres
 };
 
@@ -37,14 +37,14 @@ const categoryLists = {
   billing: "Billing",
   drinking_food: "Drinking & Food",
   vacation: "Vacation",
-  other: "Other",
+  others: "Others",
 };
 
 function LedgerTable({ refreshKey }: { refreshKey: number }) {
   const [lists, setLists] = useState<Transaction[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const initialFetch = async () => {
       try {
         const response = await fetch("http://localhost:3000/api/transactions");
         const jsonData = await response.json();
@@ -55,7 +55,7 @@ function LedgerTable({ refreshKey }: { refreshKey: number }) {
       }
     };
 
-    fetchData();
+    initialFetch();
   }, [refreshKey]);
 
   const deleteTransaction = async (id: number) => {
