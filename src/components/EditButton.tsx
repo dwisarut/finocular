@@ -24,6 +24,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Calendar } from "./ui/calendar";
 import { useState, type FormEvent } from "react";
+import { transactionSchema } from "@/schema/transaction";
 
 type Transaction = {
   id: number;
@@ -73,18 +74,37 @@ function EditButton({
     | ""
   >(transaction.category);
   const [amount, setAmount] = useState(transaction.amount);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const onSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const result = transactionSchema.safeParse({
+      type,
+      date,
+      sender,
+      recipient,
+      category,
+      amount,
+    });
+
+    if (!result.success) {
+      const fieldErrors: Record<string, string> = {};
+
+      for (const issue of result.error.issues) {
+        const field = issue.path[0];
+        if (typeof field === "string") {
+          fieldErrors[field] = issue.message;
+        }
+      }
+      setErrors(fieldErrors);
+      return;
+    }
+
     try {
       const body = {
-        type,
-        date: date ? date.toISOString() : null,
-        sender,
-        recipient,
-        category,
-        amount,
+        ...result.data,
+        date: result.data.date.toISOString(),
       };
       const response = await fetch(
         `http://localhost:3000/api/transactions/${transaction.id}`,
@@ -146,6 +166,9 @@ function EditButton({
                       </SelectGroup>
                     </SelectContent>
                   </Select>
+                  {errors.type && (
+                    <p className="text-xs text-red-500 px-1">{errors.type}</p>
+                  )}
                 </div>
                 <div className="flex flex-col gap-3">
                   <Label htmlFor="date" className="px-1">
@@ -177,6 +200,9 @@ function EditButton({
                       />
                     </PopoverContent>
                   </Popover>
+                  {errors.date && (
+                    <p className="text-xs text-red-500 px-1">{errors.date}</p>
+                  )}
                 </div>
               </div>
               <Input
@@ -186,6 +212,9 @@ function EditButton({
                 value={sender}
                 onChange={(e) => setSender(e.target.value)}
               />
+              {errors.sender && (
+                <p className="text-xs text-red-500 px-1">{errors.sender}</p>
+              )}
               <Input
                 type="text"
                 placeholder="Recipient name"
@@ -193,6 +222,9 @@ function EditButton({
                 value={recipient}
                 onChange={(e) => setRecipient(e.target.value)}
               />
+              {errors.recipient && (
+                <p className="text-xs text-red-500 px-1">{errors.recipient}</p>
+              )}
               <div className="flex flex-col gap-3">
                 <Label htmlFor="category">Category</Label>
                 <Select
@@ -238,6 +270,9 @@ function EditButton({
                     </SelectGroup>
                   </SelectContent>
                 </Select>
+                {errors.category && (
+                  <p className="text-xs text-red-500 px-1">{errors.category}</p>
+                )}
               </div>
               <Input
                 type="number"
@@ -248,6 +283,9 @@ function EditButton({
                   setAmount(e.target.value);
                 }}
               />
+              {errors.amount && (
+                <p className="text-xs text-red-500 px-1">{errors.amount}</p>
+              )}
             </div>
             <DialogFooter>
               <DialogClose asChild>
