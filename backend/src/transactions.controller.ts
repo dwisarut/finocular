@@ -73,7 +73,7 @@ const updateTransaction = async (req: Request, res: Response) => {
              [type, date, sender, recipient, category, amount, id]
         );
 
-        if (updatedTransaction.rows.length)
+        if (updatedTransaction.rows.length === 0)
             return res.status(404).json({message: `Transaction with an ID ${id} not found.`})
 
         res.status(200).json(updatedTransaction.rows[0]);
