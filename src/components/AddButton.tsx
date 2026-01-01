@@ -250,7 +250,7 @@ function AddButton({ onSuccess }: { onSuccess: () => void }) {
                   onSubmitForm(e);
                 }}
               >
-                Save changes
+                Add
               </Button>
             </DialogFooter>
           </DialogContent>
