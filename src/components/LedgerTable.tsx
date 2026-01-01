@@ -40,13 +40,7 @@ const categoryLists = {
   other: "Other",
 };
 
-function LedgerTable({
-  refreshKey,
-  onDelete,
-}: {
-  refreshKey: number;
-  onDelete: () => void;
-}) {
+function LedgerTable({ refreshKey }: { refreshKey: number }) {
   const [lists, setLists] = useState<Transaction[]>([]);
 
   useEffect(() => {
@@ -66,16 +60,11 @@ function LedgerTable({
 
   const deleteTransaction = async (id: number) => {
     try {
-      const deleteList = await fetch(
-        `http://localhost:3000/api/transactions/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
+      await fetch(`http://localhost:3000/api/transactions/${id}`, {
+        method: "DELETE",
+      });
 
-      if (deleteList.ok) {
-        onDelete();
-      }
+      setLists(lists.filter((list) => list.id !== id));
     } catch (error) {
       console.error(error);
     }

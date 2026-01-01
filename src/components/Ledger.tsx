@@ -23,10 +23,7 @@ function Ledger() {
         <div className="flex justify-end items-center gap-4">
           <AddButton onSuccess={handleTransactionChange} />
         </div>
-        <LedgerTable
-          refreshKey={refreshKey}
-          onDelete={handleTransactionChange}
-        />
+        <LedgerTable refreshKey={refreshKey} />
         <PagePagination />
       </div>
       <footer className="border-t border-border mt-24">
