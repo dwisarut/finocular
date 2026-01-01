@@ -20,7 +20,7 @@ import {
 } from "./ui/select";
 import { Label } from "./ui/label";
 import { Plus, ChevronDownIcon } from "lucide-react";
-import { useState, type MouseEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { Popover, PopoverTrigger, PopoverContent } from "./ui/popover";
 import { Calendar } from "./ui/calendar";
 import { Input } from "./ui/input";
@@ -45,7 +45,7 @@ function AddButton({ onSuccess }: { onSuccess: () => void }) {
   >("");
   const [amount, setAmount] = useState("");
 
-  const onSubmitForm = async (e: MouseEvent<HTMLButtonElement>) => {
+  const onSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
@@ -84,17 +84,17 @@ function AddButton({ onSuccess }: { onSuccess: () => void }) {
   return (
     <>
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-        <form>
-          <DialogTrigger asChild>
-            <Button
-              variant="outline"
-              className="rounded-2xl w-24 hover:cursor-pointer"
-            >
-              Add
-              <Plus />
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px] rounded-2xl">
+        <DialogTrigger asChild>
+          <Button
+            variant="outline"
+            className="rounded-2xl w-24 hover:cursor-pointer"
+          >
+            Add
+            <Plus />
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px] rounded-2xl">
+          <form className="flex flex-col gap-5" onSubmit={onSubmitForm}>
             <DialogHeader>
               <DialogTitle>Add transaction record</DialogTitle>
               <DialogDescription>
@@ -102,10 +102,6 @@ function AddButton({ onSuccess }: { onSuccess: () => void }) {
               </DialogDescription>
             </DialogHeader>
             <div className="flex flex-col gap-5">
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="receipt-image">Receipt image for OCR</Label>
-                <Input id="receipt-image" type="file" />
-              </div>
               <div className="flex flex-row justify-between">
                 <div className="flex flex-col gap-3">
                   <Label htmlFor="type">Type</Label>
@@ -246,15 +242,12 @@ function AddButton({ onSuccess }: { onSuccess: () => void }) {
               <Button
                 type="submit"
                 className="rounded-[0.5rem] hover:cursor-pointer"
-                onClick={(e) => {
-                  onSubmitForm(e);
-                }}
               >
                 Add
               </Button>
             </DialogFooter>
-          </DialogContent>
-        </form>
+          </form>
+        </DialogContent>
       </Dialog>
     </>
   );
