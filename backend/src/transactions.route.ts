@@ -1,14 +1,14 @@
 import express from "express";
 import {createTransaction,
-        fetchTransactions,
         fetchSingleTransaction,
         updateTransaction,
-        deleteTransaction
+        deleteTransaction,
+        paginationAPI
 } from "./transactions.controller"
 
 const router = express.Router();
 
-router.get("/", fetchTransactions);
+router.get("/", paginationAPI);
 router.get("/", fetchSingleTransaction);
 
 router.post("/", createTransaction);

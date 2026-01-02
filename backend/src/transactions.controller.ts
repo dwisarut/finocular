@@ -22,19 +22,37 @@ const createTransaction = async (req: Request, res: Response) => {
     
 };
 
-// READ (GET ALL TRANSACTIONS)
-const fetchTransactions = async (req: Request, res: Response) => {
+// GET - Pagination (Offset-based)
+const paginationAPI = async (req: Request, res: Response) => {
+
     try {
-        const allTransactions = await pool.query(`SELECT * FROM transactions ORDER BY date DESC, id DESC`);
-        res.status(200).json(allTransactions.rows);
+        const page = Math.max(1, Number(req.query.page as string) || 1)
+        const limit = Math.min(100, Number(req.query.limit as string) || 20)
+        const offset = (page - 1) * limit;
+
+        const { rows } = await pool.query(
+            `SELECT * FROM transactions
+             ORDER BY date DESC, id DESC
+             LIMIT $1 OFFSET $2`, 
+             [limit, offset]
+        );
+
+        const countResult = await pool.query(
+            `SELECT COUNT(*) FROM transactions`
+        );
+
+        const total = Number(countResult.rows[0].count)
+        const totalPage = Math.ceil(total/limit);
+
+        res.status(200).json({data: rows, pagination: {page, limit, total, totalPage, hasNext: page < totalPage, hasPrev: page > 1}})
+
     } catch (error) {
         if (error instanceof Error)
             res.status(500).json({message: error.message });
         else
             res.status(500).json({message: "Unknown error occur" });
-    };
-    
-};
+    }
+}
 
 // READ (GET SINGLE TRANSACTION)
 const fetchSingleTransaction = async (req: Request, res: Response) => {
@@ -109,7 +127,7 @@ const deleteTransaction = async (req: Request, res: Response) => {
 
 export {
   createTransaction,
-  fetchTransactions,
+  paginationAPI,
   fetchSingleTransaction,
   updateTransaction,
   deleteTransaction
