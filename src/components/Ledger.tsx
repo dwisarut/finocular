@@ -4,7 +4,6 @@ import { LinkedInLogoIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import { Link } from "react-router-dom";
 import LedgerTable from "./LedgerTable";
 import AddButton from "./AddButton";
-import PagePagination from "./Pagination";
 import { useState } from "react";
 
 function Ledger() {
@@ -27,7 +26,6 @@ function Ledger() {
           refreshKey={refreshKey}
           onTransactionChange={handleTransactionChange}
         />
-        <PagePagination />
       </div>
       <footer className="border-t border-border mt-24">
         <div className="flex container flex-col mt-8 mb-8">
