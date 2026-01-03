@@ -11,6 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import { TrashIcon } from "@radix-ui/react-icons";
 import EditButton from "./EditButton";
+import PagePagination from "./Pagination";
 
 type Transaction = {
   id: number;
@@ -49,21 +50,33 @@ function LedgerTable({
   onTransactionChange: () => void;
 }) {
   const [lists, setLists] = useState<Transaction[]>([]);
+  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState<{
+    page: number;
+    limit: number;
+    total: number;
+    totalPage: number;
+    hasNext: boolean;
+    hasPrev: boolean;
+  } | null>(null);
 
   useEffect(() => {
     const initialFetch = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/transactions");
+        const response = await fetch(
+          `http://localhost:3000/api/transactions?page=${page}&limit=20`
+        );
         const jsonData = await response.json();
 
-        setLists(jsonData);
+        setLists(jsonData.data);
+        setPagination(jsonData.pagination);
       } catch (err) {
         console.error(err);
       }
     };
 
     initialFetch();
-  }, [refreshKey]);
+  }, [page, refreshKey]);
 
   const deleteTransaction = async (id: number) => {
     try {
@@ -166,6 +179,15 @@ function LedgerTable({
           </TableRow>
         </TableFooter>
       </Table>
+      {pagination && (
+        <PagePagination
+          page={pagination.page}
+          totalPages={pagination.totalPage}
+          hasNext={pagination.hasNext}
+          hasPrev={pagination.hasPrev}
+          onPageChange={setPage}
+        />
+      )}
     </>
   );
 }
