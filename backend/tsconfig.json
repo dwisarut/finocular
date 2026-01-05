@@ -7,5 +7,7 @@
     "strict": true,
     "esModuleInterop": true,
     "moduleResolution": "NodeNext",
+    "allowImportingTsExtensions": true,
+    "noEmit": true
   }
 }

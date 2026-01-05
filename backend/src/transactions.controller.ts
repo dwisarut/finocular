@@ -1,5 +1,5 @@
-import pool from "./database";
-import { Request, Response } from "express";
+import pool from "./database.ts";
+import { type Request, type Response } from "express";
 
 // CREATE (POST)
 const createTransaction = async (req: Request, res: Response) => {

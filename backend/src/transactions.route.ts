@@ -4,7 +4,7 @@ import {createTransaction,
         updateTransaction,
         deleteTransaction,
         paginationAPI
-} from "./transactions.controller"
+} from "./transactions.controller.ts"
 
 const router = express.Router();
 

@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import router from "./transactions.route";
+import router from "./transactions.route.ts";
 
 const app = express();
 app.use(express.json());
