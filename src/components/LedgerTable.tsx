@@ -123,7 +123,7 @@ function LedgerTable({
         <TableBody>
           {lists.length === 0 ? (
             <TableRow>
-              <TableCell className="font-medium lato text-center" colSpan={6}>
+              <TableCell className="font-medium lato text-center" colSpan={9}>
                 Add new transaction
               </TableCell>
             </TableRow>
