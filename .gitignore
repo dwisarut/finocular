@@ -28,3 +28,5 @@ src/components/MockData.ts
 src/components/MockExpense.ts
 src/components/MockRevenue.ts
 src/components/Summation.tsx
+
+backend/image_test
