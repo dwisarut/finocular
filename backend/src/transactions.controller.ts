@@ -1,5 +1,7 @@
 import pool from "./database.ts";
+import runOCR from "./ocr.ts";
 import { type Request, type Response } from "express";
+import fs from "fs/promises";
 
 // CREATE (POST)
 const createTransaction = async (req: Request, res: Response) => {
@@ -21,6 +23,29 @@ const createTransaction = async (req: Request, res: Response) => {
     };
     
 };
+
+const initOCR = async (req: Request & { file?: Express.Multer.File }, res: Response) => {
+
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: "No file uploaded" });
+        }
+        if (!req.file.mimetype.startsWith("image/")) {
+            return res.status(400).json({ error: "Invalid file type" });
+        }
+
+        const result = await runOCR(req.file.path);
+        await fs.unlink(req.file.path);
+
+        res.status(200).json(result)
+
+    } catch (error) {
+        if (error instanceof Error)
+            res.status(500).json({message: error.message });
+        else
+            res.status(500).json({message: "Unknown error occur" });
+    }
+}
 
 // GET - Pagination (Offset-based)
 const paginationAPI = async (req: Request, res: Response) => {
@@ -127,6 +152,7 @@ const deleteTransaction = async (req: Request, res: Response) => {
 
 export {
   createTransaction,
+  initOCR,
   paginationAPI,
   fetchSingleTransaction,
   updateTransaction,

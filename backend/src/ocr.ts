@@ -13,7 +13,7 @@ type ROI = {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const imgPath = path.join(__dirname, '../image_test/BillPayment_test_6.jpg')
+const imgPath = path.join(__dirname, '../image_test/BillPayment_test_5.jpg')
 
 const metaData = await sharp(imgPath).metadata();
 const imgWidth = metaData.width ?? 0;
@@ -41,27 +41,48 @@ async function ocrROI(
   return data.text;
 }
 
+function firstLine(text: string): string {
+  const lines = text
+    .split("\n")
+    .map(l => l.trim())
+    .filter(l => 
+        l.length > 2 && 
+        !/^[^\p{L}\p{N}]+$/u.test(l)
+    );
+
+  return lines[0] ?? "";
+}
+
+function removeTHB(text: string): string {
+  const cleaned = text
+    .normalize("NFC")
+    .replace(/บาท|baht|฿|THB/gi, "")
+    .trim();
+
+  return cleaned;
+}
+
 function getROIs(imgWidth: number, imgHeight: number) {
-  if (imgHeight <= 1303 && imgWidth <= 990) {
+  if (imgHeight === 1303 && imgWidth === 990) {
     return {
       psm: PSM.SINGLE_BLOCK,
       amount: {
         left: 10,
-        top: Math.floor(imgHeight * 0.30),
-        width: imgWidth - 10,
-        height: Math.floor(imgHeight * 0.08),
+        top: Math.floor(imgHeight * 0.79),
+        width: imgWidth - 350,
+        height: Math.floor(imgHeight * 0.05),
       },
       sender: {
         left: 10,
-        top: Math.floor(imgHeight * 0.40),
+        top: Math.floor(imgHeight * 0.20),
         width: imgWidth - 10,
         height: Math.floor(imgHeight * 0.25),
       },
       recipient: {
         left: 10,
-        top: Math.floor(imgHeight * 0.58),
+        top: Math.floor(imgHeight * 0.45),
         width: imgWidth - 10,
-        height: Math.floor(imgHeight * 0.17),
+        height: Math.floor(imgHeight * 0.25),
       },
     };
   }
@@ -99,32 +120,29 @@ function collapseThai(text: string): string {
     .trim();
 }
 
-async function runOCR(imgPath: string):Promise<void> {
+async function runOCR(imgPath: string) {
 
     console.log("image height :", imgHeight);
     console.log("image width :", imgWidth);
 
     const { psm, amount, sender, recipient } = getROIs(imgWidth, imgHeight);
 
-    
-
-    const worker = await createWorker(['eng', 'tha']);
+    const worker          = await createWorker(['eng', 'tha']);
     const transactionText = await ocrROI(worker, imgPath, amount, psm);
-    const senderText = await ocrROI(worker, imgPath, sender, psm);
-    const recipientText = await ocrROI(worker, imgPath, recipient, psm);
+    const senderText      = await ocrROI(worker, imgPath, sender, psm);
+    const recipientText   = await ocrROI(worker, imgPath, recipient, psm);
     
-    // TEXT RECOGNITION OUTPUT
-    console.log("HEADER OCR:");
-    console.log(transactionText);
-    console.log("\n\n")
-    console.log("Sender OCR:");
-    console.log(collapseThai(senderText));
-    console.log("\n\n")
-    console.log("Recipient OCR:");
-    console.log(collapseThai(recipientText));
+    const processedAmount    = removeTHB(collapseThai(transactionText))
+    const processedSender    = collapseThai(firstLine(senderText))
+    const processedRecipient = collapseThai(firstLine(recipientText))
 
     await worker.terminate();
+    return { processedAmount, processedSender, processedRecipient };
 }
 
-runOCR(imgPath).catch(console.error);
+export default runOCR;
+
+// runOCR(imgPath).catch(console.error);
+
 // Different parameters for distinct for m-banking receipt image size
+// The parameter for Kbank is tuned only for English language, while ttb are tuned with both languages

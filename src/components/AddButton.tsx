@@ -25,6 +25,7 @@ import { Popover, PopoverTrigger, PopoverContent } from "./ui/popover";
 import { Calendar } from "./ui/calendar";
 import { Input } from "./ui/input";
 import { transactionSchema } from "@/schema/transaction";
+import { uploadReceipt } from "./CallOCR";
 
 function AddButton({ onSuccess }: { onSuccess: () => void }) {
   const [openDialog, setOpenDialog] = useState(false);
@@ -46,6 +47,7 @@ function AddButton({ onSuccess }: { onSuccess: () => void }) {
   >("");
   const [amount, setAmount] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [ocrLoading, setOCRLoading] = useState(false);
 
   const onSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -122,6 +124,32 @@ function AddButton({ onSuccess }: { onSuccess: () => void }) {
               </DialogDescription>
             </DialogHeader>
             <div className="flex flex-col gap-5">
+              <div className="flex flex-col w-full max-w-sm items-start gap-3">
+                <Label htmlFor="picture">Receipt Image</Label>
+                <Input
+                  id="picture"
+                  type="file"
+                  disabled={ocrLoading}
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+
+                    try {
+                      setOCRLoading(true);
+                      const result = await uploadReceipt(file);
+
+                      setAmount(result.processedAmount);
+                      setSender(result.processedSender);
+                      setRecipient(result.processedRecipient);
+                    } catch (error) {
+                      console.error(error);
+                    } finally {
+                      setOCRLoading(false);
+                      e.target.value = "";
+                    }
+                  }}
+                />
+              </div>
               <div className="flex flex-row justify-between">
                 <div className="flex flex-col gap-3">
                   <Label htmlFor="type">Type</Label>

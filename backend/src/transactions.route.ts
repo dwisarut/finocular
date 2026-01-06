@@ -3,15 +3,19 @@ import {createTransaction,
         fetchSingleTransaction,
         updateTransaction,
         deleteTransaction,
-        paginationAPI
+        paginationAPI,
+        initOCR
 } from "./transactions.controller.ts"
+import multer from "multer";
 
 const router = express.Router();
+const upload = multer({ dest: "uploads/" });
 
 router.get("/", paginationAPI);
-router.get("/", fetchSingleTransaction);
+router.get("/:id", fetchSingleTransaction);
 
 router.post("/", createTransaction);
+router.post("/ocr", upload.single("image"), initOCR);
 
 router.put("/:id", updateTransaction);
 
