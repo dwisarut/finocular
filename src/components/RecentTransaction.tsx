@@ -53,11 +53,16 @@ function TransactionSection() {
                 {recentTransaction && recentTransaction.length > 0 ? (
                   recentTransaction.map((data) => {
                     const isRevenue = data.type === "revenue";
+                    const displayType =
+                      data.type === "revenue" ? "Revenue" : "Expense";
 
                     return (
-                      <Card key={data.id} className="min-w-[200px]">
+                      <Card
+                        key={data.id}
+                        className="min-w-[200px] flex text-end"
+                      >
                         <CardHeader>
-                          <CardTitle className="Alata">{data.type}</CardTitle>
+                          <CardTitle className="Alata">{displayType}</CardTitle>
                         </CardHeader>
                         <CardContent>
                           <p
