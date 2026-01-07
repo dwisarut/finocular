@@ -7,7 +7,8 @@ import {createTransaction,
         initOCR,
         fetchTotalRevenue,
         fetchTotalExpense,
-        fetchRecentTransaction
+        fetchRecentTransaction,
+        netGainAndLoss
 } from "./transactions.controller.ts"
 import multer from "multer";
 
@@ -17,6 +18,7 @@ const upload = multer({ dest: "uploads/" });
 router.get("/summary/revenue", fetchTotalRevenue);
 router.get("/summary/expense", fetchTotalExpense);
 router.get("/summary/recent-transaction", fetchRecentTransaction)
+router.get("/summary/net-total", netGainAndLoss);
 router.get("/", paginationAPI);
 router.get("/:id", fetchSingleTransaction);
 

@@ -160,6 +160,30 @@ const fetchRecentTransaction = async (req: Request, res: Response) => {
     }
 }
 
+// Net gain/loss per today
+const netGainAndLoss = async (req: Request, res: Response) => {
+    try {
+        const result = await pool.query(
+            `SELECT COALESCE(
+                SUM(CASE
+                    WHEN type = 'revenue' THEN amount
+                    WHEN type = 'expense' THEN -amount
+                    ELSE 0
+                END
+                ), 0)
+             AS net_total
+             FROM transactions
+             WHERE date >= date_trunc('day' , now());`)
+        const netTotal = Number(result.rows[0].net_total)
+        res.status(200).json({netTotal});
+    } catch (error) {
+        if (error instanceof Error)
+            res.status(500).json({message: error.message });
+        else
+            res.status(500).json({message: "Unknown error occur" });
+    }
+}
+
 // Get date-revenue data
 
 // Get date-expense data
@@ -227,5 +251,6 @@ export {
   deleteTransaction,
   fetchTotalRevenue,
   fetchTotalExpense,
-  fetchRecentTransaction
+  fetchRecentTransaction,
+  netGainAndLoss
 };
