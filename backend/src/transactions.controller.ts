@@ -24,6 +24,7 @@ const createTransaction = async (req: Request, res: Response) => {
     
 };
 
+// OCR API
 const initOCR = async (req: Request & { file?: Express.Multer.File }, res: Response) => {
 
     try {
@@ -98,6 +99,73 @@ const fetchSingleTransaction = async (req: Request, res: Response) => {
     }
 };
 
+// Get total revenue
+const fetchTotalRevenue = async (req: Request, res: Response) => {
+    try {
+        const result = await pool.query(
+            `SELECT COALESCE(SUM(amount), 0) AS total
+            FROM transactions
+            WHERE type = $1`,
+            ["revenue"]
+        );
+
+        const totalRevenue = Number(result.rows[0].total);
+        res.status(200).json({totalRevenue});
+
+    } catch (error) {
+        if (error instanceof Error)
+            res.status(500).json({message: error.message });
+        else
+            res.status(500).json({message: "Unknown error occur" });
+    }
+}
+
+// Get total expense
+const fetchTotalExpense = async (req: Request, res: Response) => {
+    try {
+        const result = await pool.query(
+            `SELECT COALESCE(SUM(amount), 0) AS total
+            FROM transactions
+            WHERE type = $1`,
+            ["expense"]
+        );
+
+        const totalExpense = Number(result.rows[0].total);
+        res.status(200).json({totalExpense});
+
+    } catch (error) {
+        if (error instanceof Error)
+            res.status(500).json({message: error.message });
+        else
+            res.status(500).json({message: "Unknown error occur" });
+    }
+}
+
+// Get today transaction data
+const fetchRecentTransaction = async (req: Request, res: Response) => {
+    try {
+        const result = await pool.query(
+            `SELECT * FROM transactions
+             WHERE date >= date_trunc('day' , now())
+             ORDER BY date DESC`
+        );
+
+        res.status(200).json(result.rows);
+
+    } catch (error) {
+        if (error instanceof Error)
+            res.status(500).json({message: error.message });
+        else
+            res.status(500).json({message: "Unknown error occur" });
+    }
+}
+
+// Get date-revenue data
+
+// Get date-expense data
+
+// Get data for pie chart (category)
+
 // UPDATE (PUT)
 const updateTransaction = async (req: Request, res: Response) => {
     try {
@@ -156,5 +224,8 @@ export {
   paginationAPI,
   fetchSingleTransaction,
   updateTransaction,
-  deleteTransaction
+  deleteTransaction,
+  fetchTotalRevenue,
+  fetchTotalExpense,
+  fetchRecentTransaction
 };

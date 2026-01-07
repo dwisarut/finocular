@@ -4,13 +4,19 @@ import {createTransaction,
         updateTransaction,
         deleteTransaction,
         paginationAPI,
-        initOCR
+        initOCR,
+        fetchTotalRevenue,
+        fetchTotalExpense,
+        fetchRecentTransaction
 } from "./transactions.controller.ts"
 import multer from "multer";
 
 const router = express.Router();
 const upload = multer({ dest: "uploads/" });
 
+router.get("/summary/revenue", fetchTotalRevenue);
+router.get("/summary/expense", fetchTotalExpense);
+router.get("/summary/recent-transaction", fetchRecentTransaction)
 router.get("/", paginationAPI);
 router.get("/:id", fetchSingleTransaction);
 
