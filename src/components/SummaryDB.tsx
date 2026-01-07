@@ -5,22 +5,27 @@ import { useEffect, useState } from "react";
 function SummarySection() {
   const [totalRevenue, setTotalRevenue] = useState<number | null>(null);
   const [totalExpense, setTotalExpense] = useState<number | null>(null);
+  const [netTotal, setNetTotal] = useState<number | null>(null);
 
   useEffect(() => {
     const initialFetch = async () => {
       try {
-        const [revenueResponse, expenseResponse] = await Promise.all([
-          fetch("http://localhost:3000/api/transactions/summary/revenue"),
-          fetch("http://localhost:3000/api/transactions/summary/expense"),
-        ]);
+        const [revenueResponse, expenseResponse, netResponse] =
+          await Promise.all([
+            fetch("http://localhost:3000/api/transactions/summary/revenue"),
+            fetch("http://localhost:3000/api/transactions/summary/expense"),
+            fetch("http://localhost:3000/api/transactions/summary/net-total"),
+          ]);
 
-        const [revenueData, expenseData] = await Promise.all([
+        const [revenueData, expenseData, netData] = await Promise.all([
           revenueResponse.json(),
           expenseResponse.json(),
+          netResponse.json(),
         ]);
 
         setTotalRevenue(revenueData.totalRevenue);
         setTotalExpense(expenseData.totalExpense);
+        setNetTotal(netData.netTotal);
       } catch (error) {
         console.error(error);
       }
@@ -69,7 +74,16 @@ function SummarySection() {
             </Card>
           </div>
         </div>
-        <h3 className="lato">Today: +240 THB</h3>
+        <h3>
+          Today:{" "}
+          <span
+            className={
+              netTotal && netTotal < 0 ? "text-red-400" : "text-green-400"
+            }
+          >
+            {netTotal} THB
+          </span>
+        </h3>
       </div>
     </>
   );
