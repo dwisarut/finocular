@@ -39,7 +39,7 @@ function SummarySection() {
     <>
       <div className="flex flex-col gap-10">
         <h1 className="text-white text-3xl">Summary</h1>
-        <div className="flex flex-row justify-between">
+        <div className="flex flex-col lg:flex-row justify-between gap-10">
           <div className="flex flex-row gap-8">
             <Avatar className="w-24 h-auto">
               <AvatarImage src="/Avatar.svg" />
@@ -56,8 +56,8 @@ function SummarySection() {
             </div>
           </div>
 
-          <div className="flex flex-row gap-5">
-            <Card className="flex w-40 h-24 text-center justify-center">
+          <div className="flex flex-col lg:flex-row gap-10 lg:gap-5">
+            <Card className="flex w-full lg:w-40 h-30 lg:h-24 text-center justify-center">
               <CardHeader>
                 <CardTitle>Total Revenue</CardTitle>
               </CardHeader>
@@ -65,7 +65,7 @@ function SummarySection() {
                 {totalRevenue !== null ? `${totalRevenue} THB` : "Loading..."}
               </CardContent>
             </Card>
-            <Card className="flex w-40 h-24 text-center justify-center">
+            <Card className="flex w-full lg:w-40 h-30 lg:h-24 text-center justify-center">
               <CardHeader>
                 <CardTitle>Total Expense</CardTitle>
               </CardHeader>
@@ -73,9 +73,7 @@ function SummarySection() {
                 {totalExpense !== null ? `${totalExpense} THB` : "Loading..."}
               </CardContent>
             </Card>
-            <Card className="flex w-60 h-24 text-center justify-center items-center">
-              <SummaryGraph />
-            </Card>
+            <SummaryGraph />
           </div>
         </div>
         <h3>
@@ -85,6 +83,7 @@ function SummarySection() {
               netTotal && netTotal < 0 ? "text-red-400" : "text-green-400"
             }
           >
+            {netTotal && netTotal > 0 ? "+" : "-"}
             {netTotal} THB
           </span>
         </h3>
