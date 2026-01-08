@@ -36,7 +36,7 @@ function Dashboard() {
               <GitHubLogoIcon className="text-contrast-text w-5 h-auto hover:text-amber-300" />
             </Link>
             <p className="text-contrast-text text-sm lato w-xl">
-              © 2025 Wisarut Donsri - All right reserved.
+              © 2025 dwisarut - All right reserved.
             </p>
           </div>
         </div>
