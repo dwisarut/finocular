@@ -184,9 +184,34 @@ const netGainAndLoss = async (req: Request, res: Response) => {
     }
 }
 
-// Get date-revenue data
+// Get date-revenue/expense data
+const fetchSummaryGraphData = async (req: Request, res: Response) => {
+    try {
 
-// Get date-expense data
+        const result = await pool.query(
+            `
+            SELECT
+            date_trunc('day', date) AS period,
+            SUM(
+                CASE
+                WHEN type = 'revenue' THEN amount
+                WHEN type = 'expense' THEN -amount
+                END
+            ) AS total
+            FROM transactions
+            GROUP BY period
+            ORDER BY period
+            `
+        )
+
+        res.status(200).json(result.rows)
+    } catch (error) {
+        if (error instanceof Error)
+            res.status(500).json({message: error.message });
+        else
+            res.status(500).json({message: "Unknown error occur" });
+    }
+}
 
 // Get data for pie chart (category)
 
@@ -252,5 +277,6 @@ export {
   fetchTotalRevenue,
   fetchTotalExpense,
   fetchRecentTransaction,
-  netGainAndLoss
+  netGainAndLoss,
+  fetchSummaryGraphData
 };

@@ -8,7 +8,8 @@ import {createTransaction,
         fetchTotalRevenue,
         fetchTotalExpense,
         fetchRecentTransaction,
-        netGainAndLoss
+        netGainAndLoss,
+        fetchSummaryGraphData
 } from "./transactions.controller.ts"
 import multer from "multer";
 
@@ -19,6 +20,7 @@ router.get("/summary/revenue", fetchTotalRevenue);
 router.get("/summary/expense", fetchTotalExpense);
 router.get("/summary/recent-transaction", fetchRecentTransaction)
 router.get("/summary/net-total", netGainAndLoss);
+router.get("/summary/", fetchSummaryGraphData);
 router.get("/", paginationAPI);
 router.get("/:id", fetchSingleTransaction);
 
