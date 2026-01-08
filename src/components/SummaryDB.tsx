@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useEffect, useState } from "react";
+import SummaryGraph from "./SummaryGraph";
 
 function SummarySection() {
   const [totalRevenue, setTotalRevenue] = useState<number | null>(null);
@@ -71,6 +72,9 @@ function SummarySection() {
               <CardContent>
                 {totalExpense !== null ? `${totalExpense} THB` : "Loading..."}
               </CardContent>
+            </Card>
+            <Card className="flex w-60 h-24 text-center justify-center items-center">
+              <SummaryGraph />
             </Card>
           </div>
         </div>
