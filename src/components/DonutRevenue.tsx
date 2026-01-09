@@ -83,10 +83,10 @@ function DonutRevenue() {
                 data={donutChart}
                 dataKey="value"
                 nameKey="name"
-                innerRadius={120}
+                innerRadius={125}
                 outerRadius={150}
-                cornerRadius="50%"
-                paddingAngle={3}
+                cornerRadius={6}
+                paddingAngle={1}
                 stroke="none"
               >
                 {donutChart.map((entry) => (
