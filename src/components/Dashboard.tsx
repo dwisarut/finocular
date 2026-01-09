@@ -2,6 +2,9 @@ import { LinkedInLogoIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import { Link } from "react-router-dom";
 import SummarySection from "./SummaryDB";
 import TransactionSection from "./RecentTransaction";
+import RevenueGraph from "./RevenueGraph";
+import ExpenseGraph from "./ExpenseGraph";
+import DonutRevenue from "./DonutRevenue";
 
 function Dashboard() {
   return (
@@ -12,6 +15,13 @@ function Dashboard() {
         </h1>
         <SummarySection />
         <TransactionSection />
+        <div className="flex flex-row justify-between">
+          <RevenueGraph />
+          <DonutRevenue />
+        </div>
+        <div className="flex flex-row justify-between">
+          <ExpenseGraph />
+        </div>
       </div>
       <footer className="border-t border-border mt-24">
         <div className="flex container flex-col mt-8 mb-8">

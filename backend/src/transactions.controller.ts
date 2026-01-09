@@ -19,7 +19,7 @@ const createTransaction = async (req: Request, res: Response) => {
         if (error instanceof Error)
             res.status(500).json({message: error.message });
         else
-            res.status(500).json({message: "Unknown error occur" });
+            res.status(500).json({message: "Unknown error occur, can't create transaction" });
     };
     
 };
@@ -44,7 +44,7 @@ const initOCR = async (req: Request & { file?: Express.Multer.File }, res: Respo
         if (error instanceof Error)
             res.status(500).json({message: error.message });
         else
-            res.status(500).json({message: "Unknown error occur" });
+            res.status(500).json({message: "Unknown error occur, can't initiate OCR pipeline" });
     }
 }
 
@@ -76,7 +76,7 @@ const paginationAPI = async (req: Request, res: Response) => {
         if (error instanceof Error)
             res.status(500).json({message: error.message });
         else
-            res.status(500).json({message: "Unknown error occur" });
+            res.status(500).json({message: "Unknown error occur, can't fetch pagination API" });
     }
 }
 
@@ -116,7 +116,7 @@ const fetchTotalRevenue = async (req: Request, res: Response) => {
         if (error instanceof Error)
             res.status(500).json({message: error.message });
         else
-            res.status(500).json({message: "Unknown error occur" });
+            res.status(500).json({message: "Unknown error occur, can't calculate total revenue" });
     }
 }
 
@@ -137,7 +137,7 @@ const fetchTotalExpense = async (req: Request, res: Response) => {
         if (error instanceof Error)
             res.status(500).json({message: error.message });
         else
-            res.status(500).json({message: "Unknown error occur" });
+            res.status(500).json({message: "Unknown error occur, can't calculate total expense" });
     }
 }
 
@@ -156,7 +156,7 @@ const fetchRecentTransaction = async (req: Request, res: Response) => {
         if (error instanceof Error)
             res.status(500).json({message: error.message });
         else
-            res.status(500).json({message: "Unknown error occur" });
+            res.status(500).json({message: "Unknown error occur, can't fetch recent transaction" });
     }
 }
 
@@ -180,7 +180,7 @@ const netGainAndLoss = async (req: Request, res: Response) => {
         if (error instanceof Error)
             res.status(500).json({message: error.message });
         else
-            res.status(500).json({message: "Unknown error occur" });
+            res.status(500).json({message: "Unknown error occur, can't fetch net gain and loss" });
     }
 }
 
@@ -209,7 +209,7 @@ const fetchSummaryGraphData = async (req: Request, res: Response) => {
         if (error instanceof Error)
             res.status(500).json({message: error.message });
         else
-            res.status(500).json({message: "Unknown error occur" });
+            res.status(500).json({message: "Unknown error occur, can't fetch line graph data for summary" });
     }
 }
 
@@ -232,7 +232,7 @@ const revenueSummaryGraph = async (req: Request, res:Response ) => {
         if (error instanceof Error)
             res.status(500).json({message: error.message });
         else
-            res.status(500).json({message: "Unknown error occur" });
+            res.status(500).json({message: "Unknown error occur, can't fetch line graph data for revenue" });
     }
 }
 
@@ -255,11 +255,33 @@ const expenseSummaryGraph = async (req: Request, res:Response ) => {
         if (error instanceof Error)
             res.status(500).json({message: error.message });
         else
-            res.status(500).json({message: "Unknown error occur" });
+            res.status(500).json({message: "Unknown error occur, can't fetch line graph data for expense" });
     }
 }
 
-// Get data for pie chart (category)
+// Get data for pie chart of revenue (category)
+const donutRevenue = async (req: Request, res: Response) => {
+    try {
+        const result = await pool.query(
+            `
+            SELECT
+                category,
+                SUM(amount) AS total
+            FROM transactions
+            WHERE type = 'revenue'
+            GROUP BY category
+            ORDER BY total DESC
+            `
+        )
+
+        res.status(200).json(result.rows);
+    } catch (error) {
+        if (error instanceof Error)
+            res.status(500).json({message: error.message });
+        else
+            res.status(500).json({message: "Unknown error occur, can't fetch revenue donut data" });
+    }
+}
 
 // UPDATE (PUT)
 const updateTransaction = async (req: Request, res: Response) => {
@@ -288,7 +310,7 @@ const updateTransaction = async (req: Request, res: Response) => {
         if (error instanceof Error)
             res.status(500).json({message: error.message });
         else
-            res.status(500).json({message: "Unknown error occur" });
+            res.status(500).json({message: "Unknown error occur, can't update transaction" });
     }
 }
 
@@ -309,7 +331,7 @@ const deleteTransaction = async (req: Request, res: Response) => {
         if (error instanceof Error)
             res.status(500).json({message: error.message });
         else
-            res.status(500).json({message: "Unknown error occur" });
+            res.status(500).json({message: "Unknown error occur, can't delete transaction" });
     }
 }
 
@@ -326,5 +348,6 @@ export {
   netGainAndLoss,
   fetchSummaryGraphData,
   revenueSummaryGraph,
-  expenseSummaryGraph
+  expenseSummaryGraph,
+  donutRevenue
 };
