@@ -213,6 +213,31 @@ const fetchSummaryGraphData = async (req: Request, res: Response) => {
     }
 }
 
+// Get data for total revenue
+const revenueSummaryGraph = async (req: Request, res:Response ) => {
+    try {
+        const result = await pool.query(
+            `SELECT
+                date_trunc('day', date) AS period,
+                SUM(amount) AS total
+             FROM transactions
+             WHERE type = 'revenue'
+             GROUP BY period
+             ORDER BY period`
+        )
+
+        res.status(200).json(result.rows);
+
+    } catch (error) {
+        if (error instanceof Error)
+            res.status(500).json({message: error.message });
+        else
+            res.status(500).json({message: "Unknown error occur" });
+    }
+}
+
+// Get data for total expense
+
 // Get data for pie chart (category)
 
 // UPDATE (PUT)
@@ -278,5 +303,6 @@ export {
   fetchTotalExpense,
   fetchRecentTransaction,
   netGainAndLoss,
-  fetchSummaryGraphData
+  fetchSummaryGraphData,
+  revenueSummaryGraph
 };
