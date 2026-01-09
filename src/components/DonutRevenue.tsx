@@ -13,14 +13,14 @@ const CATEGORY_COLORS: Record<
   | "others",
   string
 > = {
-  income: "#4ADE80", // green-400 → positive / money coming in
-  saving_investment: "#60A5FA", // blue-400 → stability / growth
-  shopping: "#F472B6", // pink-400 → discretionary spending
-  entertainment: "#A78BFA", // purple-400 → fun / leisure
-  billing: "#F87171", // red-400 → obligations / bills
-  drinking_food: "#FBBF24", // amber-400 → food & drinks
-  vacation: "#38BDF8", // sky-400 → travel / freedom
-  others: "#9CA3AF", // gray-400 → neutral
+  income: "#4ADE80", // green-400
+  saving_investment: "#60A5FA", // blue-400
+  shopping: "#F472B6", // pink-400
+  entertainment: "#A78BFA", // purple-400
+  billing: "#F87171", // red-400
+  drinking_food: "#FBBF24", // amber-400
+  vacation: "#38BDF8", // sky-400
+  others: "#9CA3AF", // gray-400
 };
 
 const CATEGORY_LABELS: Record<keyof typeof CATEGORY_COLORS, string> = {
