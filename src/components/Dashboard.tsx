@@ -5,6 +5,7 @@ import TransactionSection from "./RecentTransaction";
 import RevenueGraph from "./RevenueGraph";
 import ExpenseGraph from "./ExpenseGraph";
 import DonutRevenue from "./DonutRevenue";
+import DonutExpense from "./DonutExpense";
 
 function Dashboard() {
   return (
@@ -21,6 +22,7 @@ function Dashboard() {
         </div>
         <div className="flex flex-row justify-between">
           <ExpenseGraph />
+          <DonutExpense />
         </div>
       </div>
       <footer className="border-t border-border mt-24">

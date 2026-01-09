@@ -12,7 +12,8 @@ import {createTransaction,
         fetchSummaryGraphData,
         revenueSummaryGraph,
         expenseSummaryGraph,
-        donutRevenue
+        donutRevenue,
+        donutExpense
 } from "./transactions.controller.ts"
 import multer from "multer";
 
@@ -27,6 +28,7 @@ router.get("/summary/", fetchSummaryGraphData);
 router.get("/summary/revenue-graph", revenueSummaryGraph);
 router.get("/summary/expense-graph", expenseSummaryGraph);
 router.get("/summary/revenue-donut", donutRevenue);
+router.get("/summary/expense-donut", donutExpense);
 router.get("/", paginationAPI);
 router.get("/:id", fetchSingleTransaction);
 

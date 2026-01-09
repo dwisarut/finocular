@@ -283,6 +283,30 @@ const donutRevenue = async (req: Request, res: Response) => {
     }
 }
 
+// Get data for pie chart of expense (category)
+const donutExpense = async (req: Request, res: Response) => {
+    try {
+        const result = await pool.query(
+            `
+            SELECT
+                category,
+                SUM(amount) AS total
+            FROM transactions
+            WHERE type = 'expense'
+            GROUP BY category
+            ORDER BY total DESC
+            `
+        )
+
+        res.status(200).json(result.rows);
+    } catch (error) {
+        if (error instanceof Error)
+            res.status(500).json({message: error.message });
+        else
+            res.status(500).json({message: "Unknown error occur, can't fetch expense donut data" });
+    }
+}
+
 // UPDATE (PUT)
 const updateTransaction = async (req: Request, res: Response) => {
     try {
@@ -349,5 +373,6 @@ export {
   fetchSummaryGraphData,
   revenueSummaryGraph,
   expenseSummaryGraph,
-  donutRevenue
+  donutRevenue,
+  donutExpense
 };
