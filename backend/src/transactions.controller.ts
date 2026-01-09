@@ -147,7 +147,7 @@ const fetchRecentTransaction = async (req: Request, res: Response) => {
         const result = await pool.query(
             `SELECT * FROM transactions
              WHERE date >= date_trunc('day' , now())
-             ORDER BY date DESC`
+             ORDER BY date DESC, id DESC`
         );
 
         res.status(200).json(result.rows);
