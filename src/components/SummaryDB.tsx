@@ -83,7 +83,7 @@ function SummarySection() {
               netTotal && netTotal < 0 ? "text-red-400" : "text-green-400"
             }
           >
-            {netTotal && netTotal > 0 ? "+" : "-"}
+            {netTotal && netTotal > 0 ? "+" : ""}
             {netTotal} THB
           </span>
         </h3>
