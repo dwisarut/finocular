@@ -30,14 +30,14 @@ const LandingPage = () => {
           <ArrowRight />
         </Button>
 
-        <div className="flex flex-col gap-64 mt-48">
+        <div className="flex flex-col gap-64 mt-48 ml-6 md:ml-0">
           <div className="flex flex-col gap-8 lg:gap-0 lg:flex-row justify-start lg:justify-between">
             <div className="flex flex-col justify-start gap-16 w-130">
               <h2 className="text-xl alata">Transaction records</h2>
-              <h3 className="text-5xl alata">
+              <h3 className="text-3xl lg:text-4xl xl:text-5xl alata w-110 md:w-full">
                 In-depth record with customized tags
               </h3>
-              <p className="text-xl lato">
+              <p className="text-xl lato w-108 md:w-full">
                 Tagging each transaction for chart visualization in order to
                 view your statistics
               </p>
@@ -51,10 +51,10 @@ const LandingPage = () => {
           <div className="flex flex-col gap-8 lg:gap-0 lg:flex-row justify-start lg:justify-between">
             <div className="flex flex-col justify-start gap-16 w-130">
               <h2 className="text-xl alata">Dashboard & Visualization</h2>
-              <h3 className="text-5xl alata">
+              <h3 className="text-3xl lg:text-4xl xl:text-5xl alata w-110 md:w-full">
                 Visualization to aid with analyzing spending habits
               </h3>
-              <p className="text-xl lato">
+              <p className="text-xl lato w-108 md:w-full">
                 Summarize and visualize transactions as a line chart, and
                 categorize the spending habit as a donut chart.
               </p>
