@@ -5,166 +5,184 @@ import fs from "fs/promises";
 
 // CREATE (POST)
 const createTransaction = async (req: Request, res: Response) => {
-    try {
-        const { type, date, sender, recipient, category, amount  } = req.body;
-        const newTransaction = await pool.query(
-            `INSERT INTO transactions
+  try {
+    const { type, date, sender, recipient, category, amount } = req.body;
+    const newTransaction = await pool.query(
+      `INSERT INTO transactions
              (type, date, sender, recipient, category, amount)
              VALUES($1, $2, $3, $4, $5, $6)
              RETURNING *`,
-            [type, date, sender, recipient, category, amount]
-        );
-        res.status(200).json(newTransaction.rows[0]);
-    } catch (error) {
-        if (error instanceof Error)
-            res.status(500).json({message: error.message });
-        else
-            res.status(500).json({message: "Unknown error occur, can't create transaction" });
-    };
-    
+      [type, date, sender, recipient, category, amount]
+    );
+    res.status(200).json(newTransaction.rows[0]);
+  } catch (error) {
+    if (error instanceof Error)
+      res.status(500).json({ message: error.message });
+    else
+      res
+        .status(500)
+        .json({ message: "Unknown error occur, can't create transaction" });
+  }
 };
 
 // OCR API
-const initOCR = async (req: Request & { file?: Express.Multer.File }, res: Response) => {
-
-    try {
-        if (!req.file) {
-            return res.status(400).json({ error: "No file uploaded" });
-        }
-        if (!req.file.mimetype.startsWith("image/")) {
-            return res.status(400).json({ error: "Invalid file type" });
-        }
-
-        const result = await runOCR(req.file.path);
-        await fs.unlink(req.file.path);
-
-        res.status(200).json(result)
-
-    } catch (error) {
-        if (error instanceof Error)
-            res.status(500).json({message: error.message });
-        else
-            res.status(500).json({message: "Unknown error occur, can't initiate OCR pipeline" });
+const initOCR = async (
+  req: Request & { file?: Express.Multer.File },
+  res: Response
+) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
     }
-}
+    if (!req.file.mimetype.startsWith("image/")) {
+      return res.status(400).json({ error: "Invalid file type" });
+    }
+
+    const result = await runOCR(req.file.path);
+    await fs.unlink(req.file.path);
+
+    res.status(200).json(result);
+  } catch (error) {
+    if (error instanceof Error)
+      res.status(500).json({ message: error.message });
+    else
+      res
+        .status(500)
+        .json({ message: "Unknown error occur, can't initiate OCR pipeline" });
+  }
+};
 
 // GET - Pagination (Offset-based)
 const paginationAPI = async (req: Request, res: Response) => {
+  try {
+    const page = Math.max(1, Number(req.query.page as string) || 1);
+    const limit = Math.min(100, Number(req.query.limit as string) || 20);
+    const offset = (page - 1) * limit;
 
-    try {
-        const page = Math.max(1, Number(req.query.page as string) || 1)
-        const limit = Math.min(100, Number(req.query.limit as string) || 20)
-        const offset = (page - 1) * limit;
-
-        const { rows } = await pool.query(
-            `SELECT * FROM transactions
+    const { rows } = await pool.query(
+      `SELECT * FROM transactions
              ORDER BY date DESC, id DESC
-             LIMIT $1 OFFSET $2`, 
-             [limit, offset]
-        );
+             LIMIT $1 OFFSET $2`,
+      [limit, offset]
+    );
 
-        const countResult = await pool.query(
-            `SELECT COUNT(*) FROM transactions`
-        );
+    const countResult = await pool.query(`SELECT COUNT(*) FROM transactions`);
 
-        const total = Number(countResult.rows[0].count)
-        const totalPage = Math.ceil(total/limit);
+    const total = Number(countResult.rows[0].count);
+    const totalPage = Math.ceil(total / limit);
 
-        res.status(200).json({data: rows, pagination: {page, limit, total, totalPage, hasNext: page < totalPage, hasPrev: page > 1}})
-
-    } catch (error) {
-        if (error instanceof Error)
-            res.status(500).json({message: error.message });
-        else
-            res.status(500).json({message: "Unknown error occur, can't fetch pagination API" });
-    }
-}
+    res.status(200).json({
+      data: rows,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPage,
+        hasNext: page < totalPage,
+        hasPrev: page > 1,
+      },
+    });
+  } catch (error) {
+    if (error instanceof Error)
+      res.status(500).json({ message: error.message });
+    else
+      res
+        .status(500)
+        .json({ message: "Unknown error occur, can't fetch pagination API" });
+  }
+};
 
 // READ (GET SINGLE TRANSACTION)
 const fetchSingleTransaction = async (req: Request, res: Response) => {
-    try {
-        const { id } = req.params;
-        const singleTransaction = await pool.query("SELECT * FROM transactions WHERE id = $1", [id]);
+  try {
+    const { id } = req.params;
+    const singleTransaction = await pool.query(
+      "SELECT * FROM transactions WHERE id = $1",
+      [id]
+    );
 
-        if (singleTransaction.rows.length === 0)
-            return res.status(404).json({message: `Transaction with an ID ${id} not found.`})
+    if (singleTransaction.rows.length === 0)
+      return res
+        .status(404)
+        .json({ message: `Transaction with an ID ${id} not found.` });
 
-        res.status(200).json(singleTransaction.rows[0]);
-
-    } catch (error) {
-        if (error instanceof Error)
-            res.status(500).json({message: error.message });
-        else
-            res.status(500).json({message: "Unknown error occur" });
-    }
+    res.status(200).json(singleTransaction.rows[0]);
+  } catch (error) {
+    if (error instanceof Error)
+      res.status(500).json({ message: error.message });
+    else res.status(500).json({ message: "Unknown error occur" });
+  }
 };
 
 // Get total revenue
 const fetchTotalRevenue = async (req: Request, res: Response) => {
-    try {
-        const result = await pool.query(
-            `SELECT COALESCE(SUM(amount), 0) AS total
+  try {
+    const result = await pool.query(
+      `SELECT COALESCE(SUM(amount), 0) AS total
             FROM transactions
             WHERE type = $1`,
-            ["revenue"]
-        );
+      ["revenue"]
+    );
 
-        const totalRevenue = Number(result.rows[0].total);
-        res.status(200).json({totalRevenue});
-
-    } catch (error) {
-        if (error instanceof Error)
-            res.status(500).json({message: error.message });
-        else
-            res.status(500).json({message: "Unknown error occur, can't calculate total revenue" });
-    }
-}
+    const totalRevenue = Number(result.rows[0].total);
+    res.status(200).json({ totalRevenue });
+  } catch (error) {
+    if (error instanceof Error)
+      res.status(500).json({ message: error.message });
+    else
+      res.status(500).json({
+        message: "Unknown error occur, can't calculate total revenue",
+      });
+  }
+};
 
 // Get total expense
 const fetchTotalExpense = async (req: Request, res: Response) => {
-    try {
-        const result = await pool.query(
-            `SELECT COALESCE(SUM(amount), 0) AS total
+  try {
+    const result = await pool.query(
+      `SELECT COALESCE(SUM(amount), 0) AS total
             FROM transactions
             WHERE type = $1`,
-            ["expense"]
-        );
+      ["expense"]
+    );
 
-        const totalExpense = Number(result.rows[0].total);
-        res.status(200).json({totalExpense});
-
-    } catch (error) {
-        if (error instanceof Error)
-            res.status(500).json({message: error.message });
-        else
-            res.status(500).json({message: "Unknown error occur, can't calculate total expense" });
-    }
-}
+    const totalExpense = Number(result.rows[0].total);
+    res.status(200).json({ totalExpense });
+  } catch (error) {
+    if (error instanceof Error)
+      res.status(500).json({ message: error.message });
+    else
+      res.status(500).json({
+        message: "Unknown error occur, can't calculate total expense",
+      });
+  }
+};
 
 // Get today transaction data
 const fetchRecentTransaction = async (req: Request, res: Response) => {
-    try {
-        const result = await pool.query(
-            `SELECT * FROM transactions
+  try {
+    const result = await pool.query(
+      `SELECT * FROM transactions
              WHERE date >= date_trunc('day' , now())
              ORDER BY date DESC, id DESC`
-        );
+    );
 
-        res.status(200).json(result.rows);
-
-    } catch (error) {
-        if (error instanceof Error)
-            res.status(500).json({message: error.message });
-        else
-            res.status(500).json({message: "Unknown error occur, can't fetch recent transaction" });
-    }
-}
+    res.status(200).json(result.rows);
+  } catch (error) {
+    if (error instanceof Error)
+      res.status(500).json({ message: error.message });
+    else
+      res.status(500).json({
+        message: "Unknown error occur, can't fetch recent transaction",
+      });
+  }
+};
 
 // Net gain/loss per today
 const netGainAndLoss = async (req: Request, res: Response) => {
-    try {
-        const result = await pool.query(
-            `SELECT COALESCE(
+  try {
+    const result = await pool.query(
+      `SELECT COALESCE(
                 SUM(CASE
                     WHEN type = 'revenue' THEN amount
                     WHEN type = 'expense' THEN -amount
@@ -173,23 +191,25 @@ const netGainAndLoss = async (req: Request, res: Response) => {
                 ), 0)
              AS net_total
              FROM transactions
-             WHERE date >= date_trunc('day' , now());`)
-        const netTotal = Number(result.rows[0].net_total)
-        res.status(200).json({netTotal});
-    } catch (error) {
-        if (error instanceof Error)
-            res.status(500).json({message: error.message });
-        else
-            res.status(500).json({message: "Unknown error occur, can't fetch net gain and loss" });
-    }
-}
+             WHERE date >= date_trunc('day' , now());`
+    );
+    const netTotal = Number(result.rows[0].net_total);
+    res.status(200).json({ netTotal });
+  } catch (error) {
+    if (error instanceof Error)
+      res.status(500).json({ message: error.message });
+    else
+      res.status(500).json({
+        message: "Unknown error occur, can't fetch net gain and loss",
+      });
+  }
+};
 
 // Get date-revenue/expense data
 const fetchSummaryGraphData = async (req: Request, res: Response) => {
-    try {
-
-        const result = await pool.query(
-            `
+  try {
+    const result = await pool.query(
+      `
             SELECT
             date_trunc('day', date) AS period,
             SUM(
@@ -202,68 +222,72 @@ const fetchSummaryGraphData = async (req: Request, res: Response) => {
             GROUP BY period
             ORDER BY period
             `
-        )
+    );
 
-        res.status(200).json(result.rows)
-    } catch (error) {
-        if (error instanceof Error)
-            res.status(500).json({message: error.message });
-        else
-            res.status(500).json({message: "Unknown error occur, can't fetch line graph data for summary" });
-    }
-}
+    res.status(200).json(result.rows);
+  } catch (error) {
+    if (error instanceof Error)
+      res.status(500).json({ message: error.message });
+    else
+      res.status(500).json({
+        message: "Unknown error occur, can't fetch line graph data for summary",
+      });
+  }
+};
 
 // Get data for total revenue
-const revenueSummaryGraph = async (req: Request, res:Response ) => {
-    try {
-        const result = await pool.query(
-            `SELECT
+const revenueSummaryGraph = async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query(
+      `SELECT
                 date_trunc('day', date) AS period,
                 SUM(amount) AS total
              FROM transactions
              WHERE type = 'revenue'
              GROUP BY period
              ORDER BY period`
-        )
+    );
 
-        res.status(200).json(result.rows);
-
-    } catch (error) {
-        if (error instanceof Error)
-            res.status(500).json({message: error.message });
-        else
-            res.status(500).json({message: "Unknown error occur, can't fetch line graph data for revenue" });
-    }
-}
+    res.status(200).json(result.rows);
+  } catch (error) {
+    if (error instanceof Error)
+      res.status(500).json({ message: error.message });
+    else
+      res.status(500).json({
+        message: "Unknown error occur, can't fetch line graph data for revenue",
+      });
+  }
+};
 
 // Get data for total expense
-const expenseSummaryGraph = async (req: Request, res:Response ) => {
-    try {
-        const result = await pool.query(
-            `SELECT
+const expenseSummaryGraph = async (req: Request, res: Response) => {
+  try {
+    const result = await pool.query(
+      `SELECT
                 date_trunc('day', date) AS period,
                 SUM(amount) AS total
              FROM transactions
              WHERE type = 'expense'
              GROUP BY period
              ORDER BY period`
-        )
+    );
 
-        res.status(200).json(result.rows);
-
-    } catch (error) {
-        if (error instanceof Error)
-            res.status(500).json({message: error.message });
-        else
-            res.status(500).json({message: "Unknown error occur, can't fetch line graph data for expense" });
-    }
-}
+    res.status(200).json(result.rows);
+  } catch (error) {
+    if (error instanceof Error)
+      res.status(500).json({ message: error.message });
+    else
+      res.status(500).json({
+        message: "Unknown error occur, can't fetch line graph data for expense",
+      });
+  }
+};
 
 // Get data for pie chart of revenue (category)
 const donutRevenue = async (req: Request, res: Response) => {
-    try {
-        const result = await pool.query(
-            `
+  try {
+    const result = await pool.query(
+      `
             SELECT
                 category,
                 SUM(amount) AS total
@@ -272,22 +296,24 @@ const donutRevenue = async (req: Request, res: Response) => {
             GROUP BY category
             ORDER BY total DESC
             `
-        )
+    );
 
-        res.status(200).json(result.rows);
-    } catch (error) {
-        if (error instanceof Error)
-            res.status(500).json({message: error.message });
-        else
-            res.status(500).json({message: "Unknown error occur, can't fetch revenue donut data" });
-    }
-}
+    res.status(200).json(result.rows);
+  } catch (error) {
+    if (error instanceof Error)
+      res.status(500).json({ message: error.message });
+    else
+      res.status(500).json({
+        message: "Unknown error occur, can't fetch revenue donut data",
+      });
+  }
+};
 
 // Get data for pie chart of expense (category)
 const donutExpense = async (req: Request, res: Response) => {
-    try {
-        const result = await pool.query(
-            `
+  try {
+    const result = await pool.query(
+      `
             SELECT
                 category,
                 SUM(amount) AS total
@@ -296,24 +322,26 @@ const donutExpense = async (req: Request, res: Response) => {
             GROUP BY category
             ORDER BY total DESC
             `
-        )
+    );
 
-        res.status(200).json(result.rows);
-    } catch (error) {
-        if (error instanceof Error)
-            res.status(500).json({message: error.message });
-        else
-            res.status(500).json({message: "Unknown error occur, can't fetch expense donut data" });
-    }
-}
+    res.status(200).json(result.rows);
+  } catch (error) {
+    if (error instanceof Error)
+      res.status(500).json({ message: error.message });
+    else
+      res.status(500).json({
+        message: "Unknown error occur, can't fetch expense donut data",
+      });
+  }
+};
 
 // UPDATE (PUT)
 const updateTransaction = async (req: Request, res: Response) => {
-    try {
-        const { id } = req.params;
-        const { type, date, sender, recipient, category, amount  } = req.body;
-        const updatedTransaction = await pool.query(
-            `UPDATE transactions
+  try {
+    const { id } = req.params;
+    const { type, date, sender, recipient, category, amount } = req.body;
+    const updatedTransaction = await pool.query(
+      `UPDATE transactions
              SET type = $1,
                  date = $2,
                  sender = $3, 
@@ -322,42 +350,49 @@ const updateTransaction = async (req: Request, res: Response) => {
                  amount = $6
              WHERE id = $7
              RETURNING *`,
-             [type, date, sender, recipient, category, amount, id]
-        );
+      [type, date, sender, recipient, category, amount, id]
+    );
 
-        if (updatedTransaction.rows.length === 0)
-            return res.status(404).json({message: `Transaction with an ID ${id} not found.`})
+    if (updatedTransaction.rows.length === 0)
+      return res
+        .status(404)
+        .json({ message: `Transaction with an ID ${id} not found.` });
 
-        res.status(200).json(updatedTransaction.rows[0]);
-
-    } catch (error) {
-        if (error instanceof Error)
-            res.status(500).json({message: error.message });
-        else
-            res.status(500).json({message: "Unknown error occur, can't update transaction" });
-    }
-}
+    res.status(200).json(updatedTransaction.rows[0]);
+  } catch (error) {
+    if (error instanceof Error)
+      res.status(500).json({ message: error.message });
+    else
+      res
+        .status(500)
+        .json({ message: "Unknown error occur, can't update transaction" });
+  }
+};
 
 // DELETE (DELETE)
 const deleteTransaction = async (req: Request, res: Response) => {
-    try {
-        const { id } = req.params;
-        const deletedTransaction = await pool.query(
-            "DELETE FROM transactions WHERE id = $1", [id]
-        );
+  try {
+    const { id } = req.params;
+    const deletedTransaction = await pool.query(
+      "DELETE FROM transactions WHERE id = $1",
+      [id]
+    );
 
-        if (deletedTransaction.rowCount === 0)
-            return res.status(404).json({message: `Transaction with an ID ${id} not found.`})
+    if (deletedTransaction.rowCount === 0)
+      return res
+        .status(404)
+        .json({ message: `Transaction with an ID ${id} not found.` });
 
-        res.status(200).json("Transaction deleted");
-
-    } catch (error) {
-        if (error instanceof Error)
-            res.status(500).json({message: error.message });
-        else
-            res.status(500).json({message: "Unknown error occur, can't delete transaction" });
-    }
-}
+    res.status(200).json("Transaction deleted");
+  } catch (error) {
+    if (error instanceof Error)
+      res.status(500).json({ message: error.message });
+    else
+      res
+        .status(500)
+        .json({ message: "Unknown error occur, can't delete transaction" });
+  }
+};
 
 export {
   createTransaction,
@@ -374,5 +409,5 @@ export {
   revenueSummaryGraph,
   expenseSummaryGraph,
   donutRevenue,
-  donutExpense
+  donutExpense,
 };

@@ -1,20 +1,21 @@
 import express from "express";
-import {createTransaction,
-        fetchSingleTransaction,
-        updateTransaction,
-        deleteTransaction,
-        paginationAPI,
-        initOCR,
-        fetchTotalRevenue,
-        fetchTotalExpense,
-        fetchRecentTransaction,
-        netGainAndLoss,
-        fetchSummaryGraphData,
-        revenueSummaryGraph,
-        expenseSummaryGraph,
-        donutRevenue,
-        donutExpense
-} from "./transactions.controller.ts"
+import {
+  createTransaction,
+  fetchSingleTransaction,
+  updateTransaction,
+  deleteTransaction,
+  paginationAPI,
+  initOCR,
+  fetchTotalRevenue,
+  fetchTotalExpense,
+  fetchRecentTransaction,
+  netGainAndLoss,
+  fetchSummaryGraphData,
+  revenueSummaryGraph,
+  expenseSummaryGraph,
+  donutRevenue,
+  donutExpense,
+} from "./transactions.controller.ts";
 import multer from "multer";
 
 const router = express.Router();
