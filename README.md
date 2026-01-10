@@ -1,73 +1,84 @@
-# React + TypeScript + Vite
+# Finocular - Integrated OCR Expense Tracker with Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<img width="1662" height="880" alt="finocular" src="https://github.com/user-attachments/assets/edc5e5d8-4404-4c0b-85e8-da5515275461" />
 
-Currently, two official plugins are available:
+Finocular is an expense tracker that records your transactions, but also visualize your cashflow in line charts and donut charts. Furthermore, with OCR (Optical Character Recognition) integrated in the form, easing up the
+recording procedure.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## React Compiler
+- **Data visualization** - Dashboard containing visualization of your revenue, expense, and category of your transactions
+- **Ledger book** - Table that record your list of transactions, included type, date, sender name, recipient name, category of transaction, and amount of each transaction
+- **OCR autofill form** - Data form that handling image input with OCR with specific bounding box, capturing receipt from different provider 
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Getting started
 
-## Expanding the ESLint configuration
+1. Clone this repository
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+    ```
+    git clone https://github.com/dwisarut/finocular.git
+    cd finocular
+    ```
+2. Install dependencies
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+    Installing all depedencies for frontend, then install it in backend
+    
+    ```
+    npm install
+    cd backend
+    npm install
+    ```
+3. Environment setup
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+    This one is require you to adjust on your own, as secrets and API key are not publicly shared.
+    ```
+    DB_USER='postgres'
+    DB_PASSWORD=
+    DB_PORT=
+    ```
+4. PostgreSQL setup
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+    Required you to installed PostgreSQL, and input the following commands to psql terminal.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+    4.1 Create the database
+    ```
+    CREATE DATABASE finocular_db;
+    ```
+    4.2 Create types
+    ```
+    CREATE TYPE transaction_type AS ENUM ('revenue', 'expense');
+    ```
+    4.3 Create categories
+    ```
+    CREATE TYPE transaction_category AS ENUM (
+        'income',
+        'saving_investment',
+        'shopping',
+        'entertainment',
+        'billing',
+        'drinking_food',
+        'vacation',
+        'other'
+    );
+    ```
+    4.4 Create the table
+    ```
+    CREATE TABLE
+        transaction (
+            id SERIAL PRIMARY KEY,
+            type transaction_type NOT NULL,
+            date TIMESTAMPTZ NOT NULL,
+            sender TEXT NOT NULL,
+            recipient TEXT NOT NULL,
+            category transaction_category NOT NULL,
+            amount NUMERIC(12, 2) NOT NULL
+        );
+    ```
+5. Run this project
+    ```
+    npm run dev
+    ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Limitation
+The OCR that uses for capturing receipt character is limited to ttb mobile banking receipt, the source code are using bounding box to limit the area of detection. In order to
+adjust for each banking, you must create a specific bounding box parameters to detect your receipt.
