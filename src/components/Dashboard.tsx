@@ -16,11 +16,11 @@ function Dashboard() {
         </h1>
         <SummarySection />
         <TransactionSection />
-        <div className="flex flex-row justify-between">
+        <div className="flex flex-col gap-8 lg:flex-row lg:justify-between">
           <RevenueGraph />
           <DonutRevenue />
         </div>
-        <div className="flex flex-row justify-between">
+        <div className="flex flex-col gap-8 lg:flex-row lg:justify-between">
           <ExpenseGraph />
           <DonutExpense />
         </div>

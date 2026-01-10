@@ -75,7 +75,7 @@ function DonutExpense() {
   return (
     <div className="flex flex-col gap-6">
       <h1 className="text-3xl">Expense Category</h1>
-      <Card className="w-116">
+      <Card className="w-full lg:w-116">
         <CardContent className="flex w-full h-102 text-center justify-center items-center p-2">
           <ResponsiveContainer width="100%" height={360}>
             <PieChart>
