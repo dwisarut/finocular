@@ -14,60 +14,70 @@ recording procedure.
 ## Getting started
 
 1. Clone this repository
-```
-git clone https://github.com/dwisarut/finocular.git
-cd finocular
-```
+
+    ```
+    git clone https://github.com/dwisarut/finocular.git
+    cd finocular
+    ```
 2. Install dependencies
-Installing all depedencies for frontend, then install it in backend
-```
-npm install
-cd backend
-npm install
-```
+
+    Installing all depedencies for frontend, then install it in backend
+    
+    ```
+    npm install
+    cd backend
+    npm install
+    ```
 3. Environment setup
-This one is require you to adjust on your own, as secrets and API key are not publicly shared.
-```
-DB_USER='postgres'
-DB_PASSWORD=
-DB_PORT=
-```
+
+    This one is require you to adjust on your own, as secrets and API key are not publicly shared.
+    ```
+    DB_USER='postgres'
+    DB_PASSWORD=
+    DB_PORT=
+    ```
 4. PostgreSQL setup
-Required you to installed PostgreSQL, and input the following commands to psql terminal.
-```
-CREATE DATABASE finocular_db;
-```
-```
-CREATE TYPE transaction_type AS ENUM ('revenue', 'expense');
-```
-```
-CREATE TYPE transaction_category AS ENUM (
-    'income',
-    'saving_investment',
-    'shopping',
-    'entertainment',
-    'billing',
-    'drinking_food',
-    'vacation',
-    'other'
-);
-```
-```
-CREATE TABLE
-    transaction (
-        id SERIAL PRIMARY KEY,
-        type transaction_type NOT NULL,
-        date TIMESTAMPTZ NOT NULL,
-        sender TEXT NOT NULL,
-        recipient TEXT NOT NULL,
-        category transaction_category NOT NULL,
-        amount NUMERIC(12, 2) NOT NULL
+
+    Required you to installed PostgreSQL, and input the following commands to psql terminal.
+
+    4.1 Create the database
+    ```
+    CREATE DATABASE finocular_db;
+    ```
+    4.2 Create types
+    ```
+    CREATE TYPE transaction_type AS ENUM ('revenue', 'expense');
+    ```
+    4.3 Create categories
+    ```
+    CREATE TYPE transaction_category AS ENUM (
+        'income',
+        'saving_investment',
+        'shopping',
+        'entertainment',
+        'billing',
+        'drinking_food',
+        'vacation',
+        'other'
     );
-```
+    ```
+    4.4 Create the table
+    ```
+    CREATE TABLE
+        transaction (
+            id SERIAL PRIMARY KEY,
+            type transaction_type NOT NULL,
+            date TIMESTAMPTZ NOT NULL,
+            sender TEXT NOT NULL,
+            recipient TEXT NOT NULL,
+            category transaction_category NOT NULL,
+            amount NUMERIC(12, 2) NOT NULL
+        );
+    ```
 5. Run this project
-```
-npm run dev
-```
+    ```
+    npm run dev
+    ```
 
 ## Limitation
 The OCR that uses for capturing receipt character is limited to ttb mobile banking receipt, the source code are using bounding box to limit the area of detection. In order to
