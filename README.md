@@ -33,7 +33,7 @@ DB_PASSWORD=
 DB_PORT=
 ```
 4. PostgreSQL setup
-Required you to installed PostgreSQL
+Required you to installed PostgreSQL, and input the following commands to psql terminal.
 ```
 CREATE DATABASE finocular_db;
 ```
