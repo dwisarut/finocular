@@ -74,11 +74,27 @@ recording procedure.
             amount NUMERIC(12, 2) NOT NULL
         );
     ```
-5. Run this project
+5. Link to the database
+
+    Adjust the setting in the ``backend/src/database.ts`` to match your PostgreSQL setting.
+    ```
+    import { Pool } from "pg";
+
+    const pool = new Pool({
+        user: "postgres",
+        password: "1215",
+        host: "localhost",
+        port: 5432,
+        database: "finocular_db"
+    });
+    
+    export default pool;
+    ```
+6. Run this project
     ```
     npm run dev
     ```
-
+    
 ## Limitation
 The OCR that uses for capturing receipt character is limited to ttb mobile banking receipt, the source code are using bounding box to limit the area of detection. In order to
 adjust for each banking, you must create a specific bounding box parameters to detect your receipt.
