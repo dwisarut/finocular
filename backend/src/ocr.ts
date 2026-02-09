@@ -1,6 +1,4 @@
 import { createWorker, PSM, type Worker } from "tesseract.js";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 
 type ROI = {
@@ -10,20 +8,11 @@ type ROI = {
   height: number;
 };
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const imgPath = path.join(__dirname, '../image_test/BillPayment_test_5.jpg')
-
-const metaData = await sharp(imgPath).metadata();
-const imgWidth = metaData.width ?? 0;
-const imgHeight = metaData.height ?? 0;
-
 async function ocrROI(
   worker: Worker,
   imgPath: string,
   roi: ROI,
-  psm: PSM
+  psm: PSM,
 ): Promise<string> {
   const buffer = await sharp(imgPath)
     .extract(roi)
@@ -44,11 +33,8 @@ async function ocrROI(
 function firstLine(text: string): string {
   const lines = text
     .split("\n")
-    .map(l => l.trim())
-    .filter(l => 
-        l.length > 2 && 
-        !/^[^\p{L}\p{N}]+$/u.test(l)
-    );
+    .map((l) => l.trim())
+    .filter((l) => l.length > 2 && !/^[^\p{L}\p{N}]+$/u.test(l));
 
   return lines[0] ?? "";
 }
@@ -74,7 +60,7 @@ function getROIs(imgWidth: number, imgHeight: number) {
       },
       sender: {
         left: 10,
-        top: Math.floor(imgHeight * 0.20),
+        top: Math.floor(imgHeight * 0.2),
         width: imgWidth - 10,
         height: Math.floor(imgHeight * 0.25),
       },
@@ -103,7 +89,7 @@ function getROIs(imgWidth: number, imgHeight: number) {
     },
     recipient: {
       left: 10,
-      top: Math.floor(imgHeight * 0.60),
+      top: Math.floor(imgHeight * 0.6),
       width: imgWidth - 10,
       height: Math.floor(imgHeight * 0.15),
     },
@@ -112,37 +98,35 @@ function getROIs(imgWidth: number, imgHeight: number) {
 
 function collapseThai(text: string): string {
   return text
-    .replace(
-      /([\u0E00-\u0E7F])\s+(?=[\u0E00-\u0E7F])/g,
-      "$1"
-    )
+    .replace(/([\u0E00-\u0E7F])\s+(?=[\u0E00-\u0E7F])/g, "$1")
     .replace(/\s{2,}/g, " ")
     .trim();
 }
 
 async function runOCR(imgPath: string) {
+  const metaData = await sharp(imgPath).metadata();
+  const imgWidth = metaData.width ?? 0;
+  const imgHeight = metaData.height ?? 0;
 
-    console.log("image height :", imgHeight);
-    console.log("image width :", imgWidth);
+  console.log("image height :", imgHeight);
+  console.log("image width :", imgWidth);
 
-    const { psm, amount, sender, recipient } = getROIs(imgWidth, imgHeight);
+  const { psm, amount, sender, recipient } = getROIs(imgWidth, imgHeight);
 
-    const worker          = await createWorker(['eng', 'tha']);
-    const transactionText = await ocrROI(worker, imgPath, amount, psm);
-    const senderText      = await ocrROI(worker, imgPath, sender, psm);
-    const recipientText   = await ocrROI(worker, imgPath, recipient, psm);
-    
-    const processedAmount    = removeTHB(collapseThai(transactionText))
-    const processedSender    = collapseThai(firstLine(senderText))
-    const processedRecipient = collapseThai(firstLine(recipientText))
+  const worker = await createWorker(["eng", "tha"]);
+  const transactionText = await ocrROI(worker, imgPath, amount, psm);
+  const senderText = await ocrROI(worker, imgPath, sender, psm);
+  const recipientText = await ocrROI(worker, imgPath, recipient, psm);
 
-    await worker.terminate();
-    return { processedAmount, processedSender, processedRecipient };
+  const processedAmount = removeTHB(collapseThai(transactionText));
+  const processedSender = collapseThai(firstLine(senderText));
+  const processedRecipient = collapseThai(firstLine(recipientText));
+
+  await worker.terminate();
+  return { processedAmount, processedSender, processedRecipient };
 }
 
 export default runOCR;
-
-// runOCR(imgPath).catch(console.error);
 
 // Different parameters for distinct for m-banking receipt image size
 // The parameter for Kbank is tuned only for English language, while ttb are tuned with both languages
