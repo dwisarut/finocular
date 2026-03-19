@@ -64,7 +64,7 @@ function LedgerTable({
     const initialFetch = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/transactions?page=${page}&limit=20`
+          `http://localhost:3000/api/transactions?page=${page}&limit=20`,
         );
         const jsonData = await response.json();
 
@@ -135,7 +135,7 @@ function LedgerTable({
                   day: "2-digit",
                   month: "short",
                   year: "numeric",
-                }
+                },
               );
               const displayType =
                 list.type === "expense" ? "Expense" : "Revenue";
